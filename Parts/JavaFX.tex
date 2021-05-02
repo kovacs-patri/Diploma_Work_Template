@@ -1,0 +1,75 @@
+Tulajdonságai: 
+
+a Java natív része 
+
+támogatja több szál párhuzamos futtatását, generikus típusok és lambda kifejezések használatát valamint az adatkötést 
+
+JavaFX kód írható bármilyen JVM által támogatott szkriptnyelven, mint például Groovy vagy Scala 
+
+multimédiás megoldásokat is nyújt (videók és hangok lejátszása) 
+
+a platformon elérhető kodekeket használja 
+
+lehetővé teszi webtartalom beágyazását az alkalmazásba 
+
+támogatja a különféle effektek és animációk alkalmazását, melyek játékfejlesztés szempontjából előnyösek 
+
+A JavaFX platform komponensei 
+
+Ebben az alfejezetben részletesebben bemutatom a 2. ábra alapján, hogy a JavaFX platform milyen komponensekből épül fel. 
+
+
+A felhasználói felület Scene graph-ból, úgynevezett jelenetgráfból épül fel, a JavaFX publikus API segítségével. A jelenetgráf vizuális elemeket tartalmaz, melyeket Node-oknak, más néven csomópontoknak hívnak és hierarchikus módon, fa-struktúra szerűen vannak rendezve. Ezek az elemek képesek kezelni a felhasználói inputokat, lehetnek effektjeik, transzformációik és állapotaik. Ilyen vizuális elem lehet például egy gomb vagy egy szövegmező.  
+
+A Prism egy hardveres gyorsítású grafikus pipeline, amely a jelenetgráf rendereléséért felel. 
+
+A Glass Windowing Toolkit ablakozási feladatokért felelős, melyeket a natív operációs rendszertől függően jelenít meg, valamint kezeli az eseménysorokat is. JavaFX-ben a fő szálban kerülnek kezelésre az események, ezt a szálat JavaFX Application Thread-nek hívják. A jelenetgráf csak ezen a szálon módosítható. Amikor módosításra kerül egy jelenetgráf, például egy felhasználói input hatására, akkor a Prism-nek újra meg kell jelenítenie a jelenetgráfot.  
+
+A média motor hang és videó lejátszásáért felelős, amihez a platformon lévő kodekeket használja. GStreamerre épül, amely egy nyílt forráskódú multimédia keretrendszer. 
+
+A webmotor webes tartalom jelenetgráfba ágyazásáért felel, melyet a Prism jelenít meg. WebKit alapú, amely egy nyílt forráskódú webböngésző-motor. A Safari böngésző is ezt a motort használja, valamint több alkalmazás is macOS-en, iOS-en és Linuxon is. Továbbá korábban a Google Chrome és az Opera is ezt használta. 
+
+A Quantum Toolkit az előbbiek feletti absztrakciós szint, mely megkönnyíti ezen alacsony szintű komponensek közötti koordinációt. 
+
+Egy JavaFX alkalmazás életciklusa 
+
+JavaFX alkalmazás futtatásakor a következő két fő szál jön létre: 
+
+JavaFX Application Thread 
+
+JavaFX Launcher 
+
+Egy JavaFX alkalmazás az Application osztályból öröklődik. Az alkalmazás életciklusa alatt az Application osztály launch() metódusának meghívásakor a következő metódusok futnak le az alábbi sorrendben: 
+
+paraméter nélküli konstruktor 
+
+init() 
+
+start() 
+
+Az init() metódus a JavaFX Launcher Thread-ben hívódik meg, a start() pedig a JavaFX Application Thread-ben. Amikor az alkalmazás leáll, akkor a stop() metódus hívódik meg, bezárni pedig a Platform.exit() metódussal lehet.  
+
+Model-View-Controller (MVC) és a JavaFX 
+
+A Model-View-Controller, röviden MVC, egy programtervezési minta, amely szétválasztja a megjelenítést (view) az adatoktól (model), melyeket egy vezérlő (controller) kapcsol össze. 
+
+Előnye, hogy bármelyik rész könnyen lecserélhető, így egyszerűbben módosítható. A JavaFX az MVC programtervezési mintát követi. A 3. ábrán látható az MVC működése: 
+
+
+Model 
+
+A szoftver állapotát leíró változókat, objektumokat tartalmazza. 
+
+View 
+
+Kétféleképpen építhető fel a felhasználói felület egy JavaFX alkalmazásban: 
+
+Java kóddal 
+
+FXML használatával 
+
+Az FXML egy XML alapú, szkriptelhető jelölőnyelv. Segítségével a kódtól teljesen függetlenül, külön fájlban készíthető el a felület. Létezik az FXML-nek vizuális szerkesztője is, ez pedig a Scene Builder. Segítségével gyorsabban és egyszerűbben össze lehet állítani a GUI-t. 
+
+Controller 
+
+Az FXML fájlban megadható, hogy melyik kontroller osztály tartozik az adott felülethez. A kontroller osztály eléri az FXML-ben lévő elemeket és műveleteket végezhet a GUI-n. 

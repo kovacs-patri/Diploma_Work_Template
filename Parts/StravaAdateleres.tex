@@ -1,0 +1,103 @@
+A feladat megvalósításához elengedhetetlen az adott Strava felhasználó különféle adatainak elérése, annak a weboldalra feltöltött aktivitásaira vonatkozó információit is beleértve. Ezen adatokhoz többféleképpen is hozzá lehet férni. Lehetséges a Strava publikus API-ján keresztül, vagy akár csak egyszerű HTTP kérésekkel is. 
+
+A nyilvános API a Swagger Codegen kódgenerátor segítségével generálható le a hozzá tartozó URL címen található JSON fájlból, különböző programozási nyelvekre. Itt látható egy minta parancs az API kódjának generálására: 
+
+swagger-codegen generate -i https://developers.strava.com/swagger/swagger.json -l java -o generated/java 
+
+
+A -i kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generálandó kód. A -l kapcsolóval lehet megjelölni, hogy mely programozási nyelven szeretnénk megkapni az eredményt, a -o beírása után pedig a célkönyvtár elérési útját kell megadni. Hogy mely nyelveket támogatja a Swagger Codegen, azt a swagger-codegen parancs önmagában való futtatásával lehet kilistázni. A fenti parancsot lefuttatva a Strava API-ja java nyelven kerül legenerálásra a generated/java mappába. Mivel az én programomban nem volt szükség összetettebb funkciók használatára a szükséges adatok eléréséhez, így elegendőnek láttam ezeket inkább csak egyszerű HTTP kérésekkel megoldani. A kész projekt könyvtárstruktúrája a 17. ábrán látható: 
+
+
+Programomban a felhasználó Strava adataihoz való hozzáféréshez és ezek tárolásához a következő osztályok felelősek: 
+
+Controller 
+
+HttpRequest 
+
+StravaLogin 
+
+User 
+
+Az App nevű futtatható osztály tartalmazza a program indításához szükséges beállításokat, a sample.fxml fájl betöltését is beleértve. A Controller osztály felel a bejelentkezés lebonyolításáért, a kapcsolat frissítéséért, a felhasználó beállításáért, valamint az FXML fájlban lévő komponensekre vonatkozó események irányításáért. A HttpRequest osztály tartalmaz egy HTTP POST kérésért felelős függvényt, mely egy JSON objektummal tér vissza, valamint egy HTTP GET kérésre vonatkozó függvényt, aminek pedig a visszatérési értéke egy JSONArray. A Strava felhasználó adatai eléréséhez szükséges URL címeket, illetve az ezeket kiegészítő clientId és clientSecret kódokat a StravaLogin osztály tartalmazza. Végül pedig az User osztály a bejelentkezett felhasználóra vonatkozó adatokat tárolja, illetve azokkal történő számításokat végez. 
+
+Ezen osztályoknak a célja, hogy a programon belül megtörténjen a felhasználó bejelentkezése, az adatainak és az aktivitási listájának elérése, az ezekből származó megtett távolságokkal való számolás, illetve pontok gyűjtése a felhasználó számára. A következőkben leírom ennek a megvalósítását, amit a controller osztály részletesebb ismertetésével kezdek. 
+
+A program felhasználói felületén elhelyeztem egy WebView-t, mely a javafx.scene.web csomagjában található, és webes felület megjelenítésére szolgál. Az authentikációhoz szükséges URL a következő, melyet a WebView-hoz beállított WebEngine megpróbál betölteni: 
+
+https://www.strava.com/oauth/authorize?client_id=[CLIENT_ID]&response_type=code&redirect_uri=http://localhost&approval_prompt=force&scope=activity:read_all 
+
+Az URL-ben szereplő [CLIENT_ID] a Strava weboldalán bejelentkezett felhasználóként létrehozott App client id-jével kiegészítendő. Mivel az authentikációra való engedély megadása csak a Strava oldalára való bejelentkezés után érhető el, így ennek az URL-nek a betöltésére a https://www.strava.com/login címre irányít át, ahol el kell végezni a bejelentkezést. Ezután már betöltődik az authentikációhoz szükséges cím, melyen meg kell adni az engedélyt a folytatáshoz. Amint ez megtörtént, egy olyan URL-re következik az átirányítás, mely tartalmazza a szükséges Tokenek beszerzéséhez szükséges kódot. Ez a cím tartalmazza a localhost/ szövegrészt, így erre beállítottam egy Listener-t, mely az URL változását figyeli. Ha tartalmazza a localhost/ szövegrészt, az azt jelenti, hogy megtörtént az authentikáció. Ebben az esetben meghívódik egy metódus, amely a legutóbb betöltött címből eléri a szükséges kódot, ezt beilleszti az Access és a Refresh Token kéréséhez szükséges URL-be, majd lefut a tokenek beszerzéséért felelős metódus. 
+
+public void webViewLogin() { 
+
+webPane.setVisible(true); 
+
+login.setWebEngine(webView.getEngine()); 
+
+login.getWebEngine().getLoadWorker().stateProperty(). 
+
+addListener((ov, oldState, newState) -> { 
+
+webPane.setVisible(false); 
+
+loginPane.setVisible(true); 
+
+          	apiRequest(login.getWebEngine().getLocation()); 
+
+           deleteFile(); 
+
+           createAthleteObject(); 
+
+           loginPane.setVisible(true); 
+
+            } 
+
+        }); 
+
+        login.getWebEngine().load(login.getAuthURL()); 
+
+    } 
+
+ 
+
+A kapcsolat megnyitásához szükséges Access Token-t, illetve a későbbiekben az ezt frissítő Refresh Token-t a következő URL címre történő HTTP POST kéréssel kapom meg, ahol a [clientId] és [clientSecret] a Strava weboldalán létrehozott App client id-jével, és client secret-ével kiegészítendő: https://www.strava.com/oauth/token?client_id=[CLIENT_ID]&client_secret=[CLIENT_SECRET] 
+
+A válasz egy JSON objektum, mely tartalmazza az access token-t, a refresh token-t, illetve hogy az access token meddig érvényes Unix epoch időben, ami a UTC 1970.01.01. éjféltől eltelt másodpercek száma , valamint tartalmazza még a felhasználóra vonatkozó általános adatokat, úgy, mint a neve, neme, lakhelye, stb. Itt beállítom a felhasználóhoz a két tokent, illetve a lejárati időt, valamint a játékos nevét. A java.time.Instant programcsomag tartalmaz egy Instant.now().getEpochSecond() függvényt, mely visszaadja az éppen jelenlegi rendszeridőt epoch másodpercben, ezzel hasonlítom össze egy metódusban az eltárolt lejárati időt az aktuális rendszeridővel. 
+
+Ha lejárt a token, akkor a következő URL címre küldve egy HTTP POST kérést megkapom az új access token-t, és ennek lejáratát: https://www.strava.com/oauth/token?client_id=[CLIENT_ID]&client_secret=[CLIENT_SECRET]&refresh_token=[REFRESH_TOKEN]&grant_type=refresh_token 
+
+Az URL-ben lévő [CLIENT_ID] és [CLIENT_SECRET] a már korábban említett client_id-t és client_secret-et jelenti, a [REFRESH_TOKEN]-t pedig a bejelentkezett felhasználóhoz beállított User objektumból érem el. A válasz pedig szintén egy JSON objektum, de ez csak a token-ekre vonatkozó információkat tartalmazza. 
+
+Amint megtörtént a bejelentkezés, megtörténik a User aktivitási listájának lekérdezése. A következő URL-re történő HTTP GET kéréssel megkapható a felhasználó aktivitási listája, mely JSONArray-ként érkezik a válaszban, amit eltárolok a User objektumban: https://www.strava.com/api/v3/athlete/activities?access_token=[ACCESS_TOKEN] 
+
+Ezeken kívül ebben az osztályban történnek még a különböző gombokra vonatkozó események kezelése is. 
+
+A HttpRequest osztály csak két függvényt tartalmaz, a HTTP kérésekre vonatkozóan. Csak a POST függvényt részletezem, mivel a kettő között csak a visszatérési értékben és a kérés típusában van lényeges különbség. 
+
+ 
+
+A java.net programcsomagja tartalmazza az URL és a HttpURLConnection osztályokat, melyeket a kapcsolat megnyitására használtam a szóban forgó függvényekben. Az elérni kívánt URL címét String-ként kapja meg a függvény, melyet URL objektummá alakít, ezután megnyitja erre a kapcsolatot. Beállítottam a kérés típusát, jelen esetben POST-ot, mely output-ját egy StringBuilder változóba összefűzi, majd ezt a választ átadja egy JSON objektumnak, amivel a függvény visszatér. 
+
+A User osztályban a bejelentkezett felhasználóra vonatkozó információkat, valamint az ezeket beállító és lekérő függvényeket és metódusokat tárolom, illetve itt találhatók meg a megtett távolságokat és a pontokat számoló függvények. A felhasználóról a következő adatokat tárolom: 
+
+név 
+
+id 
+
+access token 
+
+refresh token 
+
+token lejárati ideje 
+
+utolsó aktivitásának id-je 
+
+az összes megtett útja 
+
+a jelenleg felhasználható pontja 
+
+az eddig elköltött pontjai 
+
+a játékba való belépésénél számított legutóbbi aktivitás id-je 
+
+az összes aktivitásának listája 

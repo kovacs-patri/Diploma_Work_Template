@@ -1,0 +1,5 @@
+A Strava API egy nyilvánosan elérhető interfész, ami hozzáférést biztosít a Strava adatbázisában tárolt adatok hozzáféréséhez. Ahhoz, hogy használni lehessen a Strava API-t, először az applikációt regisztrálni kell a weboldalon. Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek a 15. ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
+
+A kérések küldéséhez szükség van autentikációra, melyhez a Strava az OAuth2-t használja. Az OAuth elindulása után szükség van a felhasználó bejelentkezésére a Strava weboldalán, hogy engedélyezze az alkalmazás számára a hozzáférést. Ez a 16. ábrán látható. 
+
+Miután ez megtörtént, átirányítja a felhasználót egy másik URL címre, mely tartalmaz egy rövid életű kódot, amit felhasználhat az autorizációhoz. Ez a kód, a Client ID-vel és a Client Secret-tel együtt felhasználható egy kérésre, amellyel le lehet kérni a felhasználóra vonatkozó információkat. Az Access Token az azonosított felhasználó adatainak eléréséhez szükséges, 6 óránként megújul. A Refresh Tokenek új Access Tokenek beszerzésére szolgálnak, ha azok lejártak. 

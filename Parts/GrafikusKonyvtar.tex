@@ -1,0 +1,33 @@
+A Java egy több évtizedes technológia, ezidő alatt sokat fejlődött, így több választási lehetőség is volt a grafikus rendszer kiválasztásának terén, úgy, mint az AWT, az SWT, a Swing és a JavaFX. Ebben az alfejezetben ezeket a lehetséges grafikus rendszereket hasonlítom össze. 
+
+AWT 
+
+Az AWT egy API, grafikus felhasználói felület készítéséhez Java-ban. Komponensei platformfüggőek, vagyis olyan interfészeket tartalmaznak, amelyek kölcsönhatásba lépnek a helyi felhasználói felülettel, így az operációs rendszer kinézetének megfelelően jelennek meg. Az AWT grafikus függvényei egytől egyig megfelelnek az operációs rendszer grafikus függvényeinek. 
+
+Előnyei közé tartozik, hogy gyors, stabil, kevés memóriát használ és kevesebb az indítási esemény, mivel az AWT komponenseket az operációs rendszer lokálisan valósítja meg. 
+
+Hátránya lehet, hogy ha ugyanazt az alkalmazást más platformon futtatjuk, akkor nem biztos, hogy minden ugyanúgy fog megjelenni, mint amin eredetileg készült, mivel a különböző operációs rendszerek grafikus könyvtárai által nyújtott funkcionalitások nem teljesen azonosak. Negatívuma még, hogy hiányoznak belőle a fák és a táblák, illetve nem bővíthető, vagyis nem lehet egy, már meglévő AWT komponenst örökíteni és újra felhasználni. 
+
+Swing 
+
+A Swing egy olyan AWT-re épülő grafikus interfész rendszer, amely megpróbálja pótolni az AWT hiányosságait. Platformfüggetlen, nem az operációs rendszer grafikus komponenseit használja, hanem saját, rajzolt komponensei vannak. Az AWT Window komponensét használja, azon kívül minden más elemét lecseréli. 
+
+A Swing az alkalmazás minden komponensének megjelenését testreszabhatja anélkül, hogy jelentősen módosítaná az alkalmazás kódját. Használatával „drag&drop” módszerrel és kézzel leprogramozva is elkészíthetőek grafikus felületek. API-kat biztosít akadálymentesítés és kétdimenziós grafikák készítéséhez, és hozzájárul többnyelvű alkalmazások létrehozásához is. A Swing előnyei közé tartozik még, hogy komponenstípusok széles választékát kínálja, követi az MVC mintát. Továbbá rugalmas, bővíthető és stabil. 
+
+Hátránya, hogy nagyobb a memóriaigénye, mint az AWT-nek és az SWT-nek. A Swing alkalmazások gyakran a teljesítmény romlását okozzák, mivel az összes saját komponensét implementálja, emiatt futási időben nagy számú osztályt tölt be. 
+
+SWT 
+
+Az SWT-t az IBM készítette az Eclipse-hez, mivel a Swing-et nem tartották alkalmasnak hozzá. Alternatívaként hozták létre az AWT és a Swing helyett. Egyáltalán nem kapcsolódik hozzájuk, nem része a Java API-nak. 
+
+Előnyei, hogy különböző komponens típusok széles skáláját kínálja, gyors válaszidejű, kevés a memóriafelhasználása. 
+
+JavaFX 
+
+A JavaFX egy nyílt forráskódú Java alapú keretrendszer, mely alkalmas Rich Internet Application alkalmazások (komplex felhasználói felülettel rendelkező webalkalmazások) fejlesztésére. Az ilyen alkalmazások képesek adatokat elérni az internetről böngésző használata nélkül. A Swing leváltására hozták létre. Több platformon, különböző eszközökön futtathatók, mint például asztali számítógépeken, mobiltelefonokon, TV-n, stb. A Swing alkalmazások beépíthetik a JavaFX funkcionalitást, mivel probléma nélkül futnak egymás mellett. 
+
+A megjelenítési feladatok elvégzéséhez egy Prism nevű nagyteljesítményű grafikus motort használ, az ablakrendszerhez az ún. Glass-t, ezek mellett használ még egy média és egy web motort. Ezek a Quantum Toolkit-en keresztül kapcsolódnak egymáshoz. 
+
+A JavaFX használata egyszerűvé teszi az összetett felhasználói felületek fejlesztését Java programozási nyelven. Használható olyan JVM alapú technológiákkal, mint a Java, a Groovy és a JRuby. Lehetővé teszi a felhasználói felületek fejlesztését FXML-ben. Scene Builder vizuális elrendezési környezetet is kínál. 
+
+Az előzőekkel összehasonlítva, nekem ez tűnt a legalkalmasabb egy játék program elkészítéséhez, így ezt használtam a program fejlesztésénél. A következő alfejezetben bővebben szót ejtek a JavaFX keretrendszerről. 

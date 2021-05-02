@@ -1,0 +1,17 @@
+Az OAuth 2.0 egy olyan keretrendszer, amely bizonyos HTTP szolgáltatásokhoz, felhasználói fiókok adataira vonatkozóan nyújt korlátozott jogosultságot harmadik féltől származó alkalmazások számára. 
+
+Működése 
+
+A 14. ábrán látható az OAuth 2.0 működése: 
+
+Az alkalmazás engedélyt kér a felhasználótól az adatai eléréséhez 
+
+Ha elfogadásra kerül a kérés, az alkalmazás megkapja az engedélyt 
+
+Elküldi az authorizációért felelős szervernek a saját identitására vonatkozó hitelességét, valamint a felhasználótól megkapott engedélyt, egy Access Token-ért cserébe 
+
+Ha a szerver érvényesnek ítélte a kérést, válaszul elküldi az Access Token-t 
+
+Az alkalmazás az erőforrásokért felelős szervernek elküldi az Access Token-t, a szükséges erőforrásokért cserébe 
+
+Ha érvényes a Token, a szerver válaszul elküldi a szükséges adatokat 
