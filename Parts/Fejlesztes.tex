@@ -4,11 +4,11 @@ Ebben a fejezetben a fejlesztési dokumentációt mutatom be. Először bemutato
 
 A Strava API egy nyilvánosan elérhető interfész, ami hozzáférést biztosít a Strava adatbázisában tárolt adatok hozzáféréséhez. Ahhoz, hogy használni lehessen a Strava API-t, először az applikációt regisztrálni kell a weboldalon. Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek a 15. ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
 
- 
+\Figure {stravaApp}{Strava alkalmazás adatai}{width=10cm}
 
 A kérések küldéséhez szükség van autentikációra, melyhez a Strava az OAuth2-t használja. Az OAuth elindulása után szükség van a felhasználó bejelentkezésére a Strava weboldalán, hogy engedélyezze az alkalmazás számára a hozzáférést. Ez a 16. ábrán látható. 
 
-
+\Figure {stravaAuth}{Strava authorizáció megerősítése}{width=10cm}
 
 Miután ez megtörtént, átirányítja a felhasználót egy másik URL címre, mely tartalmaz egy rövid életű kódot, amit felhasználhat az autorizációhoz. Ez a kód, a Client ID-vel és a Client Secret-tel együtt felhasználható egy kérésre, amellyel le lehet kérni a felhasználóra vonatkozó információkat. Az Access Token az azonosított felhasználó adatainak eléréséhez szükséges, 6 óránként megújul. A Refresh Tokenek új Access Tokenek beszerzésére szolgálnak, ha azok lejártak. 
 
@@ -23,7 +23,7 @@ A nyilvános API a Swagger Codegen kódgenerátor segítségével generálható 
 
 A -i kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generálandó kód. A -l kapcsolóval lehet megjelölni, hogy mely programozási nyelven szeretnénk megkapni az eredményt, a -o beírása után pedig a célkönyvtár elérési útját kell megadni. Hogy mely nyelveket támogatja a Swagger Codegen, azt a swagger-codegen parancs önmagában való futtatásával lehet kilistázni. A fenti parancsot lefuttatva a Strava API-ja java nyelven kerül legenerálásra a generated/java mappába. Mivel az én programomban nem volt szükség összetettebb funkciók használatára a szükséges adatok eléréséhez, így elegendőnek láttam ezeket inkább csak egyszerű HTTP kérésekkel megoldani. A kész projekt könyvtárstruktúrája a 17. ábrán látható: 
 
-
+\Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=12cm}
 
 
 Programomban a felhasználó Strava adataihoz való hozzáféréshez és ezek tárolásához a következő osztályok felelősek: 
@@ -45,6 +45,10 @@ A program felhasználói felületén elhelyeztem egy WebView-t, mely a javafx.sc
 \begin{verbatim}
 https://www.strava.com/oauth/authorize?client_id=[CLIENT_ID]&response_type=code&redirect_uri=http://localhost&approval_prompt=force&scope=activity:read_all 
 \end{verbatim}
+
+
+\begin{verbatim}
+
 
 Az URL-ben szereplő [CLIENT_ID] a Strava weboldalán bejelentkezett felhasználóként létrehozott App client id-jével kiegészítendő. Mivel az authentikációra való engedély megadása csak a Strava oldalára való bejelentkezés után érhető el, így ennek az URL-nek a betöltésére a https://www.strava.com/login címre irányít át, ahol el kell végezni a bejelentkezést. Ezután már betöltődik az authentikációhoz szükséges cím, melyen meg kell adni az engedélyt a folytatáshoz. Amint ez megtörtént, egy olyan URL-re következik az átirányítás, mely tartalmazza a szükséges Tokenek beszerzéséhez szükséges kódot. Ez a cím tartalmazza a localhost/ szövegrészt, így erre beállítottam egy Listener-t, mely az URL változását figyeli. Ha tartalmazza a localhost/ szövegrészt, az azt jelenti, hogy megtörtént az authentikáció. Ebben az esetben meghívódik egy metódus, amely a legutóbb betöltött címből eléri a szükséges kódot, ezt beilleszti az Access és a Refresh Token kéréséhez szükséges URL-be, majd lefut a tokenek beszerzéséért felelős metódus. 
 
@@ -236,3 +240,4 @@ A felület kinézetének módosításához a JavaFX Cascading Style Sheets-et ha
 A programhoz egy CSS fájlt szerkesztettem, ez tartalmaz minden szükséges beállítást, melyek meg vannak adva a felületen a különféle, megjelenő elemeknek. Itt szerepelnek a betűkre, gombokra, Label-ekre, Slider-re, a háttérre, a ScrollPane-re és a benne lévő lista megjelenéséhez kapcsolódó információk. Hogy ezek megjelenjenek a GUI-n, az FXML fájlban a megfelelő elemek tulajdonságainak felsorolásában szerepelnie kell a használandó CSS fájl nevének a következő módon: stylesheets="@style.css". 
 
 Ha egy elemre külön, a CSS fájl által tartalmazott .class beállítást szeretnénk megadni, azt jelen esetben például a háttér beállítására vonatkozóan a style.css-ben szereplő .background{}-on belüli tulajdonságokat, azt a styleClass="background" módon kell jelölni az FXML fájlban. CSS fájltól függetlenül is lehetőség van megadni az FXML fájlban JavaFX CSS megjelenítési tulajdonságokat például style="-fx-background-color: #b38f6b; -fx-border-color: #5D544C;" módon. 
+\end{verbatim}
