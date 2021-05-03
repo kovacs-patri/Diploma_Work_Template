@@ -1,0 +1,230 @@
+
+\section{Java}
+
+A program elkészítéséhez egy olyan programozási nyelvet kellett választani, amelyben kényelmesen lehet grafikus felületet készíteni, illetve amiben különösebb nehézség nélkül meg lehet csinálni a webes authentikációt a fitnesz adatbázishoz való csatlakozáshoz. Ezt több technológiahalmaz is támogatja, mint például a C++ és QML StackView vagy a typescript, Node.js és Elektron kombináció, de a Java nyelvet választottam, mivel ezt ismerem a legjobban és minden követelménynek megfelelt, továbbá egy igencsak elterjedt programozási nyelv.
+
+A Java egy olyan programozási nyelv, mely kikényszeríti az objektumorientált elvek betartását. James Gosling vezetésével a Sun Microsystems egyik csoportja, a JavaSoft tervezte, első verzióját 1996-ban adták ki.
+
+\subsection*{Tulajdonságai:}
+\begin{itemize}
+\item egyszerű, vagyis kevés nyelvi eszközt kínál
+\item szintaktikájában nincsenek mutatók, garbage collected nyelv
+\item objektumorientált
+\item hibatűrő
+\item biztonságos
+\item platformfüggetlen, különböző gépeken futtatható
+\item nincsenek implementációfüggő részei
+\item több szál párhuzamos futtatását biztosítja
+\end{itemize}
+
+Azért a Java nyelvet választottam, mert tanulmányaim során ezt ismertem meg legjobban és tovább szerettem volna bővíteni a tudásom a témakörön belül.
+
+\section{Lehetséges grafikus könyvtárak összehasonlítása}
+
+A Java egy több évtizedes technológia, ezidő alatt sokat fejlődött, így több választási lehetőség is volt a grafikus rendszer kiválasztásának terén, úgy, mint az AWT, az SWT, a Swing és a JavaFX. Ebben az alfejezetben ezeket a lehetséges grafikus rendszereket hasonlítom össze. 
+
+\subsection*{AWT} 
+
+Az AWT egy API, grafikus felhasználói felület készítéséhez Java-ban. Komponensei platformfüggőek, vagyis olyan interfészeket tartalmaznak, amelyek kölcsönhatásba lépnek a helyi felhasználói felülettel, így az operációs rendszer kinézetének megfelelően jelennek meg. Az AWT grafikus függvényei egytől egyig megfelelnek az operációs rendszer grafikus függvényeinek. 
+
+Előnyei közé tartozik, hogy gyors, stabil, kevés memóriát használ és kevesebb az indítási esemény, mivel az AWT komponenseket az operációs rendszer lokálisan valósítja meg. 
+
+Hátránya lehet, hogy ha ugyanazt az alkalmazást más platformon futtatjuk, akkor nem biztos, hogy minden ugyanúgy fog megjelenni, mint amin eredetileg készült, mivel a különböző operációs rendszerek grafikus könyvtárai által nyújtott funkcionalitások nem teljesen azonosak. Negatívuma még, hogy hiányoznak belőle a fák és a táblák, illetve nem bővíthető, vagyis nem lehet egy, már meglévő AWT komponenst örökíteni és újra felhasználni. 
+
+\subsection*{Swing}
+
+A Swing egy olyan AWT-re épülő grafikus interfész rendszer, amely megpróbálja pótolni az AWT hiányosságait. Platformfüggetlen, nem az operációs rendszer grafikus komponenseit használja, hanem saját, rajzolt komponensei vannak. Az AWT Window komponensét használja, azon kívül minden más elemét lecseréli. 
+
+A Swing az alkalmazás minden komponensének megjelenését testreszabhatja anélkül, hogy jelentősen módosítaná az alkalmazás kódját. Használatával „drag\&drop” módszerrel és kézzel leprogramozva is elkészíthetőek grafikus felületek. API-kat biztosít akadálymentesítés és kétdimenziós grafikák készítéséhez, és hozzájárul többnyelvű alkalmazások létrehozásához is. A Swing előnyei közé tartozik még, hogy komponenstípusok széles választékát kínálja, követi az MVC mintát. Továbbá rugalmas, bővíthető és stabil. 
+
+Hátránya, hogy nagyobb a memóriaigénye, mint az AWT-nek és az SWT-nek. A Swing alkalmazások gyakran a teljesítmény romlását okozzák, mivel az összes saját komponensét implementálja, emiatt futási időben nagy számú osztályt tölt be. 
+
+\subsection*{SWT}
+
+Az SWT-t az IBM készítette az Eclipse-hez, mivel a Swing-et nem tartották alkalmasnak hozzá. Alternatívaként hozták létre az AWT és a Swing helyett. Egyáltalán nem kapcsolódik hozzájuk, nem része a Java API-nak. 
+
+Előnyei, hogy különböző komponens típusok széles skáláját kínálja, gyors válaszidejű, kevés a memóriafelhasználása. 
+
+\subsection*{JavaFX}
+
+A JavaFX egy nyílt forráskódú Java alapú keretrendszer, mely alkalmas Rich Internet Application alkalmazások (komplex felhasználói felülettel rendelkező webalkalmazások) fejlesztésére. Az ilyen alkalmazások képesek adatokat elérni az internetről böngésző használata nélkül. A Swing leváltására hozták létre. Több platformon, különböző eszközökön futtathatók, mint például asztali számítógépeken, mobiltelefonokon, TV-n, stb. A Swing alkalmazások beépíthetik a JavaFX funkcionalitást, mivel probléma nélkül futnak egymás mellett. 
+
+A megjelenítési feladatok elvégzéséhez egy Prism nevű nagyteljesítményű grafikus motort használ, az ablakrendszerhez az ún. Glass-t, ezek mellett használ még egy média és egy web motort. Ezek a Quantum Toolkit-en keresztül kapcsolódnak egymáshoz. 
+
+A JavaFX használata egyszerűvé teszi az összetett felhasználói felületek fejlesztését Java programozási nyelven. Használható olyan JVM alapú technológiákkal, mint a Java, a Groovy és a JRuby. Lehetővé teszi a felhasználói felületek fejlesztését FXML-ben. Scene Builder vizuális elrendezési környezetet is kínál. 
+
+Az előzőekkel összehasonlítva, nekem ez tűnt a legalkalmasabb egy játék program elkészítéséhez, így ezt használtam a program fejlesztésénél. A következő alfejezetben bővebben szót ejtek a JavaFX keretrendszerről. 
+
+\section{A JavaFX ismertetése}
+
+\subsection*{Tulajdonságai:}
+\begin{itemize}
+\item a Java natív része 
+\item támogatja több szál párhuzamos futtatását, generikus típusok és lambda kifejezések használatát valamint az adatkötést 
+\item JavaFX kód írható bármilyen JVM által támogatott szkriptnyelven, mint például Groovy vagy Scala 
+\item multimédiás megoldásokat is nyújt (videók és hangok lejátszása) 
+\item a platformon elérhető kodekeket használja 
+\item lehetővé teszi webtartalom beágyazását az alkalmazásba
+\end{itemize}
+
+\subsection*{A JavaFX platform komponensei}
+
+Ebben az alfejezetben részletesebben bemutatom a 2. ábra alapján, hogy a JavaFX platform milyen komponensekből épül fel. 
+
+\Figure {javafx}{JavaFX platform komponensei}{width=15cm}
+
+
+A felhasználói felület Scene graph-ból, úgynevezett jelenetgráfból épül fel, a JavaFX publikus API segítségével. A jelenetgráf vizuális elemeket tartalmaz, melyeket Node-oknak, más néven csomópontoknak hívnak és hierarchikus módon, fa-struktúra szerűen vannak rendezve. Ezek az elemek képesek kezelni a felhasználói inputokat, lehetnek effektjeik, transzformációik és állapotaik. Ilyen vizuális elem lehet például egy gomb vagy egy szövegmező.  
+
+A Prism egy hardveres gyorsítású grafikus pipeline, amely a jelenetgráf rendereléséért felel. 
+
+A Glass Windowing Toolkit ablakozási feladatokért felelős, melyeket a natív operációs rendszertől függően jelenít meg, valamint kezeli az eseménysorokat is. JavaFX-ben a fő szálban kerülnek kezelésre az események, ezt a szálat JavaFX Application Thread-nek hívják. A jelenetgráf csak ezen a szálon módosítható. Amikor módosításra kerül egy jelenetgráf, például egy felhasználói input hatására, akkor a Prism-nek újra meg kell jelenítenie a jelenetgráfot.  
+
+A média motor hang és videó lejátszásáért felelős, amihez a platformon lévő kodekeket használja. GStreamerre épül, amely egy nyílt forráskódú multimédia keretrendszer. 
+
+A webmotor webes tartalom jelenetgráfba ágyazásáért felel, melyet a Prism jelenít meg. WebKit alapú, amely egy nyílt forráskódú webböngésző-motor. A Safari böngésző is ezt a motort használja, valamint több alkalmazás is macOS-en, iOS-en és Linuxon is. Továbbá korábban a Google Chrome és az Opera is ezt használta. 
+
+A Quantum Toolkit az előbbiek feletti absztrakciós szint, mely megkönnyíti ezen alacsony szintű komponensek közötti koordinációt. 
+
+\subsection*{Egy JavaFX alkalmazás életciklusa}
+
+JavaFX alkalmazás futtatásakor a következő két fő szál jön létre: 
+
+\begin{itemize}
+\item JavaFX Application Thread 
+\item JavaFX Launcher 
+\end{itemize}
+
+Egy JavaFX alkalmazás az Application osztályból öröklődik. Az alkalmazás életciklusa alatt az Application osztály launch() metódusának meghívásakor a következő metódusok futnak le az alábbi sorrendben: 
+
+\begin{itemize}
+\item paraméter nélküli konstruktor 
+\item init() 
+\item start() 
+\end{itemize}
+
+Az init() metódus a JavaFX Launcher Thread-ben hívódik meg, a start() pedig a JavaFX Application Thread-ben. Amikor az alkalmazás leáll, akkor a stop() metódus hívódik meg, bezárni pedig a Platform.exit() metódussal lehet.  
+
+\subsection*{Model-View-Controller (MVC) és a JavaFX}
+
+A Model-View-Controller, röviden MVC, egy programtervezési minta, amely szétválasztja a megjelenítést (view) az adatoktól (model), melyeket egy vezérlő (controller) kapcsol össze. 
+
+Előnye, hogy bármelyik rész könnyen lecserélhető, így egyszerűbben módosítható. A JavaFX az MVC programtervezési mintát követi. A 3. ábrán látható az MVC működése: 
+
+
+\subsection*{Model} 
+
+A szoftver állapotát leíró változókat, objektumokat tartalmazza. 
+
+\subsection*{View}
+
+Kétféleképpen építhető fel a felhasználói felület egy JavaFX alkalmazásban: 
+
+\begin{itemize}
+\item Java kóddal 
+\item FXML használatával 
+\end{itemize}
+
+Az FXML egy XML alapú, szkriptelhető jelölőnyelv. Segítségével a kódtól teljesen függetlenül, külön fájlban készíthető el a felület. Létezik az FXML-nek vizuális szerkesztője is, ez pedig a Scene Builder. Segítségével gyorsabban és egyszerűbben össze lehet állítani a GUI-t. 
+
+\subsection*{Controller}
+
+Az FXML fájlban megadható, hogy melyik kontroller osztály tartozik az adott felülethez. A kontroller osztály eléri az FXML-ben lévő elemeket és műveleteket végezhet a GUI-n.
+
+
+\subsection{Egy JavaFX alkalmazás}
+
+Ebben a fejezetben egy minta alkalmazáson keresztül bemutatom, hogy hogyan épül fel egy JavaFX-es Maven projekt. Két JavaFX-es alap közül választhatunk, ha Maven projektet szeretnénk létrehozni: 
+
+egyszerű, FXML-t alapból nem tartalmazó JavaFX projekt 
+
+FXML-t tartalmazó JavaFX projekt 
+
+Könyvtárstruktúrája a 4. ábrán látható módon épül fel: 
+
+ 
+
+
+Az App.java egy futtatható osztályt tartalmaz, ezzel indul el a JavaFX alkalmazás. Kiterjeszti az Application osztályt, mely tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat. 
+
+Mint minden Maven projektben, itt is megtalálható a POM.xml fájl. Tartalmazza a projektre vonatkozó adatokat, mint például verziószám, projekt neve, kódolás, valamint magában foglalja még a függőségeket. A build folyamaton belül megtalálható, hogy milyen plugin-ok segítségével épül fel a program. 
+
+A kontroller osztályok hozzáférnek az FXML-ben lévő elemekhez. Az ezekben megírt parancsok alapján módosul a felület. 
+
+A projekt strukturán továbbmenve, az Other Sources nevű mappán belül található meg a két .fxml kiterjesztésű FXML fájl, amelyek a view-t adják. Ebben a projektben gombnyomásra csere történik a két felület között. Mint már korábban említettem, az FXML egy XML alapú nyelv, melyet a JavaFX alkalmazások felhasználói felületének szerkesztéséhez fejlesztettek, hogy a program felépítése megfeleljen az MVC tervezési mintának. Így, ha csak a kinézeten szeretnénk változtatni, nem szükséges átírni a Java kódot, elég lehet csak az FXML-t szerkeszteni. A … ábrán látható egy példa arra, hogy hogyan épül fel egy FXML fájl: 
+
+
+
+A struktúrában ezeken felül megtalálhatóak még a használt függőségek, melyeket a program használ. 
+
+A lefuttatott alkalmazás eredménye pedig az .. és az .. ábrákon látható: 
+
+\section{OAuth 2.0}
+
+Az OAuth 2.0 egy olyan keretrendszer, amely bizonyos HTTP szolgáltatásokhoz, felhasználói fiókok adataira vonatkozóan nyújt korlátozott jogosultságot harmadik féltől származó alkalmazások számára. 
+
+\subsection*{Működése} 
+
+A 14. ábrán látható az OAuth 2.0 működése: 
+
+
+\begin{enumerate}
+\item Az alkalmazás engedélyt kér a felhasználótól az adatai eléréséhez 
+\item Ha elfogadásra kerül a kérés, az alkalmazás megkapja az engedélyt 
+\item Elküldi az authorizációért felelős szervernek a saját identitására vonatkozó hitelességét, valamint a felhasználótól megkapott engedélyt, egy Access Token-ért cserébe 
+\item Ha a szerver érvényesnek ítélte a kérést, válaszul elküldi az Access Token-t 
+\item Az alkalmazás az erőforrásokért felelős szervernek elküldi az Access Token-t, a szükséges erőforrásokért cserébe 
+\item Ha érvényes a Token, a szerver válaszul elküldi a szükséges adatokat 
+\end{enumerate}
+
+
+\section{JSON}
+
+A JSON (JavaScript Object Notation) egy embereknek is könnyen írható és olvasható, hierarchikus felépítésű adatcsere-formátum. Részben a JavaScript nyelven alapul. XML alternatívaként használják, leggyakrabban egy webalkalmazás és egy szerver közti adatok átvitelére. 
+
+Egy példa alapján bemutatom a felépítését. 
+
+{"cars": [{ 
+"brand": "Ford", 
+"model": "Mustang", 
+"year": 2021, 
+"available": false, 
+"owner": "John" 
+        }, { 
+"brand": "Audi", 
+"model": "A7", 
+"year": 2015, 
+"available": true, 
+"owner": null 
+        } 
+]} 
+
+Egy objektumra vonatkozó adatok { és } írandók. A példában egy "cars" nevű objektum található, mely egy tömbbel rendelkezik, ami két objektumot tartalmaz. A tömb elemei [ és ] közé írandók. Mint látható, egy objektum több név-érték párt is tartalmazhat, ezeket vesszővel kell elválasztani. A szöveges értékeket idézőjelek közé kell írni. A példában is látszik, hogy sztringeken kívül értékül adható még szám, logikai igaz vagy hamis, illetve null érték is. 
+
+\section{Maven}
+
+A Maven egy olyan szoftver, mely segítségével automatizálhatók a build folyamatok, illetve projektek menedzselésére is alkalmazható. Használatával a program felépítéséhez szükséges függőségeket nem szükséges manuálisan letölteni, mivel ezt automatikusan megteszi a projekt fordítása előtt egy repositoryból. Rengeteg függőség elérhető például a Maven Central Repository-ból, de léteznek más repository-k is és magunk is létrehozhatunk sajátot. 
+
+A Maven alapja a Project Object Model (POM), amely egy XML fájl, melybe meg kell adni minden szükséges információt, ami a program felépítéséhez elengedhetetlen. Ez alapján a Maven képes elvégezni a build folyamatot, különböző dokumentációk, riportok generálását, források lefordítását, az alkalmazás összecsomagolását. A build folyamat kimenetele az artifact. Ez például 3rd party library esetén JAR állomány, web alkalmazás esetén pedig WAR állomány. Létre lehet hozni vele még például projekt sablonokat is különböző paraméterek megadásával. 
+
+\section{Fejlesztést támogató eszközök}
+
+\subsection{NetBeans IDE} 
+
+A NetBeans egy Java nyelven írt, nyílt forráskódú, integrált fejlesztői környezet. Fejlesztése 1996-ban kezdődött egy egyetemi projekt keretén belül, eleinte Xelfi névre hallgatott. Első verziója 1997-ben jelent meg. 1999-ben a Sun Microsystems felvásárolta a programot és megnyitotta annak forráskódját. 2010-ben az Oracle felvásárolta a Sun-t, ezáltal a NetBeans is Oracle fejlesztés alá került. A NetBeans 8.2-es kiadása után, 2016-ban az Oracle átadta az Apache Software Foundation-nek a program forráskódját, így jelenleg ők fejlesztik tovább a fejlesztői környezetet.
+
+\subsection{SceneBuilder}
+
+Egy FXML dokumentumot kétféleképpen szerkeszthetünk, az egyik mód, hogy a szerkesztőjében kézzel írunk be mindent, vagy pedig egy vizuális szerkesztő segítségével, mely nem más, mint a Scene Builder. A Scene Builder egy nyílt forráskódú, felhasználói felület tervező eszköz. Segítségével gyorsan össze lehet állítani a fejlesztendő program kinézetét, „fogd és vidd” módszerrel egyszerűen rendezhetőek a megjeleníteni kívánt elemek, melyeknek minden tulajdonságát beállíthatjuk a Scene Builder-en belül. Az ebben megalkotott kinézet kódja automatikusan létrejön a háttérben.
+
+\subsection{Fitnesz adatbázisok}
+
+A specifikációban leírt program egy része, hogy valamilyen weboldalról adatokat gyűjtsön egy azonosított felhasználó aktivitásáról. 
+
+\subsection*{Lehetséges források, és azokhoz való hozzáférés lehetőségei}
+
+Lehetséges források közül a Google Fit és a Strava API-jával ismerkedtem, mivel ezek széles körben használt eszközök, és biztosítanak Java hozzáférést. Mindkettő esetben REST API segítségével történik az adatokhoz való hozzáférés. 
+
+Ezeken kívül létezik még sok más olyan forrás, ahonnét aktivitási adatokat lehet elérni, mint például a Garmin Connect, vagy a RunKeeper, viszont ezek közül nem mindegyiknek ingyenes és publikus az API-ja, vagy nem feltétlenül van hozzá Java lib. 
+
+A két lehetséges forrás közül a Strava-t választottam, mivel a platformok között talán ez a legnépszerűbb, és több más fitnesz adatokat tároló adatbázisból lehet rá szinkronizálni aktivitási adatokat. Ezen kívül nyílt API-val rendelkezik, és van hozzá Java támogatás is, így ezt ideálisnak tartottam. 
