@@ -2,11 +2,11 @@ Ebben a fejezetben a fejlesztési dokumentációt mutatom be. Először bemutato
 
 \section{Alkalmazás regisztrálása a Strava weboldalán}
 
-A Strava API egy nyilvánosan elérhető interfész, ami hozzáférést biztosít a Strava adatbázisában tárolt adatok hozzáféréséhez. Ahhoz, hogy használni lehessen a Strava API-t, először az applikációt regisztrálni kell a weboldalon. Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek a 15. ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
+A Strava API egy nyilvánosan elérhető interfész, ami hozzáférést biztosít a Strava adatbázisában tárolt adatok hozzáféréséhez. Ahhoz, hogy használni lehessen a Strava API-t, először az applikációt regisztrálni kell a weboldalon. Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek a \ref{fig_stravaApp} ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
 
 \Figure {stravaApp}{Strava alkalmazás adatai}{width=10cm}
 
-A kérések küldéséhez szükség van autentikációra, melyhez a Strava az OAuth2-t használja. Az OAuth elindulása után szükség van a felhasználó bejelentkezésére a Strava weboldalán, hogy engedélyezze az alkalmazás számára a hozzáférést. Ez a 16. ábrán látható. 
+A kérések küldéséhez szükség van autentikációra, melyhez a Strava az OAuth2-t használja. Az OAuth elindulása után szükség van a felhasználó bejelentkezésére a Strava weboldalán, hogy engedélyezze az alkalmazás számára a hozzáférést. Ez a \ref{fig_stravaAuth} ábrán látható. 
 
 \Figure {stravaAuth}{Strava authorizáció megerősítése}{width=10cm}
 
@@ -22,7 +22,7 @@ A nyilvános API a Swagger Codegen kódgenerátor segítségével generálható 
 $ swagger-codegen generate -i https://developers.strava.com/swagger/swagger.json -l java -o generated/java 
 \end{verbatim}
 
-A -i kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generálandó kód. A -l kapcsolóval lehet megjelölni, hogy mely programozási nyelven szeretnénk megkapni az eredményt, a -o beírása után pedig a célkönyvtár elérési útját kell megadni. Hogy mely nyelveket támogatja a Swagger Codegen, azt a swagger-codegen parancs önmagában való futtatásával lehet kilistázni. A fenti parancsot lefuttatva a Strava API-ja java nyelven kerül legenerálásra a generated/java mappába. Mivel az én programomban nem volt szükség összetettebb funkciók használatára a szükséges adatok eléréséhez, így elegendőnek láttam ezeket inkább csak egyszerű HTTP kérésekkel megoldani. A kész projekt könyvtárstruktúrája a 17. ábrán látható: 
+A -i kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generálandó kód. A -l kapcsolóval lehet megjelölni, hogy mely programozási nyelven szeretnénk megkapni az eredményt, a -o beírása után pedig a célkönyvtár elérési útját kell megadni. Hogy mely nyelveket támogatja a Swagger Codegen, azt a swagger-codegen parancs önmagában való futtatásával lehet kilistázni. A fenti parancsot lefuttatva a Strava API-ja java nyelven kerül legenerálásra a generated/java mappába. Mivel az én programomban nem volt szükség összetettebb funkciók használatára a szükséges adatok eléréséhez, így elegendőnek láttam ezeket inkább csak egyszerű HTTP kérésekkel megoldani. A kész projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán látható: 
 
 \Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=12cm}
 
