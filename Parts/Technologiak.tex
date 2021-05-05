@@ -109,7 +109,7 @@ Az init() metódus a JavaFX Launcher Thread-ben hívódik meg, a start() pedig a
 
 A Model-View-Controller, röviden MVC, egy programtervezési minta, amely szétválasztja a megjelenítést (view) az adatoktól (model), melyeket egy vezérlő (controller) kapcsol össze. 
 
-Előnye, hogy bármelyik rész könnyen lecserélhető, így egyszerűbben módosítható. A JavaFX az MVC programtervezési mintát követi. A 3. ábrán látható az MVC működése:
+Előnye, hogy bármelyik rész könnyen lecserélhető, így egyszerűbben módosítható. A JavaFX az MVC programtervezési mintát követi. A \ref{fig_mvc} ábrán látható az MVC működése:
 
 \Figure {mvc}{MVC működése}{width=15cm}
 
@@ -142,7 +142,7 @@ egyszerű, FXML-t alapból nem tartalmazó JavaFX projekt
 
 FXML-t tartalmazó JavaFX projekt 
 
-Könyvtárstruktúrája a 4. ábrán látható módon épül fel: 
+Könyvtárstruktúrája a \ref{fig_mintaProjekt} ábrán látható módon épül fel: 
 
 \Figure {mintaProjekt}{Egy minta Maven-JavaFX program struktúrája}{height=10cm}
 
@@ -153,17 +153,18 @@ Mint minden Maven projektben, itt is megtalálható a POM.xml fájl. Tartalmazza
 
 A kontroller osztályok hozzáférnek az FXML-ben lévő elemekhez. Az ezekben megírt parancsok alapján módosul a felület. 
 
-A projekt strukturán továbbmenve, az Other Sources nevű mappán belül található meg a két .fxml kiterjesztésű FXML fájl, amelyek a view-t adják. Ebben a projektben gombnyomásra csere történik a két felület között. Mint már korábban említettem, az FXML egy XML alapú nyelv, melyet a JavaFX alkalmazások felhasználói felületének szerkesztéséhez fejlesztettek, hogy a program felépítése megfeleljen az MVC tervezési mintának. Így, ha csak a kinézeten szeretnénk változtatni, nem szükséges átírni a Java kódot, elég lehet csak az FXML-t szerkeszteni. A … ábrán látható egy példa arra, hogy hogyan épül fel egy FXML fájl: 
+A projekt strukturán továbbmenve, az Other Sources nevű mappán belül található meg a két .fxml kiterjesztésű FXML fájl, amelyek a view-t adják. Ebben a projektben gombnyomásra csere történik a két felület között. Mint már korábban említettem, az FXML egy XML alapú nyelv, melyet a JavaFX alkalmazások felhasználói felületének szerkesztéséhez fejlesztettek, hogy a program felépítése megfeleljen az MVC tervezési mintának. Így, ha csak a kinézeten szeretnénk változtatni, nem szükséges átírni a Java kódot, elég lehet csak az FXML-t szerkeszteni. A \ref{fig_mintaFXML} ábrán látható egy példa arra, hogy hogyan épül fel egy FXML fájl: 
 
 \Figure {mintaFXML}{Egy minta FXML fájl felépítése}{width=15cm}
 
 A struktúrában ezeken felül megtalálhatóak még a használt függőségek, melyeket a program használ. 
 
-A lefuttatott alkalmazás eredménye pedig az .. és az .. ábrákon látható:
+A lefuttatott alkalmazás eredménye pedig az \ref{fig_primary} ábrán látható:
+
+%
 
 \Figure {primary}{Minta projekt lefuttatása után}{width=10cm}
 
-\Figure {secondary}{Minta projekt a gomb megnyomásának hatására}{width=10cm}
 
 \section{OAuth 2.0}
 
@@ -171,7 +172,7 @@ Az OAuth 2.0 egy olyan keretrendszer, amely bizonyos HTTP szolgáltatásokhoz, f
 
 \subsection*{Működése} 
 
-A 14. ábrán látható az OAuth 2.0 működése: 
+A \ref{fig_oauth} ábrán látható az OAuth 2.0 működése: 
 
 \Figure {oauth}{OAuth 2.0 működése}{width=15cm}
 
