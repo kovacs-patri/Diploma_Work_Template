@@ -1,31 +1,33 @@
-A játék indításakor a 18. ábrán látható ablak fogadja a felhasználót: 
+A játék indításakor a \ref{fig_bejelentkezes1} ábrán látható ablak fogadja a felhasználót: 
 
 \Figure {bejelentkezes1}{Bejelentkező ablak 1.}{width=10cm}
+
+%
 
 \Figure {bejelentkezes2}{Bejelentkező ablak 2.}{width=10cm}
 
 
-Ha van mentés, a ComboBox-ra kattintva megjelennek a mentett fájlokból kiolvasott játékosok nevei, majd ezek közül egyet kiválasztva elérhetővé válik az „Ok” gomb. A „bejelentkezés másik felhasználóba” gomb megnyomásakor a 19. ábrán látható felület jelenik meg: 
+Ha van mentés, a ComboBox-ra kattintva megjelennek a mentett fájlokból kiolvasott játékosok nevei, majd ezek közül egyet kiválasztva elérhetővé válik az „Ok” gomb. A „bejelentkezés másik felhasználóba” gomb megnyomásakor a \ref{fig_stravaLogin} ábrán látható felület jelenik meg: 
 
 \Figure {stravaLogin}{Strava bejelentkezés}{width=10cm}
 
 
-Itt tud a felhasználó bejelentkezni a Strava fiókjába. Bejelentkezés után a 20. ábrán látható lehetőség jelenik meg: 
+Itt tud a felhasználó bejelentkezni a Strava fiókjába. Bejelentkezés után a \ref{fig_stravaConnect} ábrán látható lehetőség jelenik meg: 
 
 \Figure {stravaConnect}{Strava app authorizáció}{width=10cm}
 
 
 
-Ahhoz, hogy megfelelően működjön a program, és elérhetőek legyenek az aktivitási adatok, a privát aktivitási adatokra vonatkozó opciónak bepipálva kell lennie, és az „Authorize” gomb megnyomása után megtörténik a Tokenek cseréje, feltöltődik a User objektum a programban. A Cancel gomb megnyomására bezárul a program. Ha minden rendben történt, a 21. ábrán látható ablak jelenik meg: 
+Ahhoz, hogy megfelelően működjön a program, és elérhetőek legyenek az aktivitási adatok, a privát aktivitási adatokra vonatkozó opciónak bepipálva kell lennie, és az „Authorize” gomb megnyomása után megtörténik a Tokenek cseréje, feltöltődik a User objektum a programban. A Cancel gomb megnyomására bezárul a program. Ha minden rendben történt, a \ref{fig_newGame} ábrán látható ablak jelenik meg: 
 
 \Figure {newGame}{Bejelentkezett felhasználó}{width=10cm}
 
 
-Ez az ablak jelenik meg egyből, miután a kezdőfelületen kiválasztásra került valamelyik mentés. A betöltés gomb csak akkor elérhető, ha a bejelentkezett felhasználó rendelkezik mentéssel. Az „Új játék” gomb megnyomásának hatására elindul a játék, megjelenik az ennek megfelelő ablak, mely a 22. ábrán látható. 
+Ez az ablak jelenik meg egyből, miután a kezdőfelületen kiválasztásra került valamelyik mentés. A betöltés gomb csak akkor elérhető, ha a bejelentkezett felhasználó rendelkezik mentéssel. Az „Új játék” gomb megnyomásának hatására elindul a játék, megjelenik az ennek megfelelő ablak, mely a \ref{fig_game} ábrán látható. 
 
 \Figure {game}{Játék}{width=15cm}
 
-Jelen esetben a területeken lévő katonák száma 10 és 15 között került kiosztásra véletlenszerűen. A játékos színe a kék. Jobb oldalon találhatók a játékmenet irányítására szolgáló gombok, valamint az arra vonatkozó információk. Az „eddig megtett méter” jelöli, hogy a játék indítása óta hány métert tett meg a felhasználó az aktivitásai során, melyeket feltöltött a Strava weboldalára. A mellette lévő gomb ennek az értéknek a manuális frissítésére szolgál. A gép köre után pedig automatikusan frissül. Alatta a „kör” jelzi, hogy hányadik körben tart a játék. A játékos kezd a körben, ezután a gép következik, majd egy újabb kör indul a játékos lépéseivel. Ezalatt megjelenik, hogy éppen melyik fázisban tart a játék, valamint, hogy ki következik az adott körben. Az erősítési fázisban láthatóvá válik még, hogy hány katona tehető még le, alap esetben egy. Rossz területre való kattintás hatására az erre vonatkozó információ is megjelenik ezek alatt. A kurzort a körök fölé húzva megjelennek az azokhoz tartozó megyék nevei. Az erősítési fázis kihagyható az „erősítés vége” gomb megnyomásával. A támadás a 23. ábrán látható módon zajlik: 
+Jelen esetben a területeken lévő katonák száma 10 és 15 között került kiosztásra véletlenszerűen. A játékos színe a kék. Jobb oldalon találhatók a játékmenet irányítására szolgáló gombok, valamint az arra vonatkozó információk. Az „eddig megtett méter” jelöli, hogy a játék indítása óta hány métert tett meg a felhasználó az aktivitásai során, melyeket feltöltött a Strava weboldalára. A mellette lévő gomb ennek az értéknek a manuális frissítésére szolgál. A gép köre után pedig automatikusan frissül. Alatta a „kör” jelzi, hogy hányadik körben tart a játék. A játékos kezd a körben, ezután a gép következik, majd egy újabb kör indul a játékos lépéseivel. Ezalatt megjelenik, hogy éppen melyik fázisban tart a játék, valamint, hogy ki következik az adott körben. Az erősítési fázisban láthatóvá válik még, hogy hány katona tehető még le, alap esetben egy. Rossz területre való kattintás hatására az erre vonatkozó információ is megjelenik ezek alatt. A kurzort a körök fölé húzva megjelennek az azokhoz tartozó megyék nevei. Az erősítési fázis kihagyható az „erősítés vége” gomb megnyomásával. A támadás a \ref{fig_attack} ábrán látható módon zajlik: 
 
 \Figure {attack}{Támadás}{width=15cm}
 
@@ -34,27 +36,29 @@ A felhasználó egy saját területét kiválasztva pirosra színeződnek a kör
 
 \Figure {move1}{Átcsoportosítás 1.}{width=15cm}
 
+%
+
 \Figure {move2}{Átcsoportosítás 2.}{width=15cm}
 
 
 
-Egy saját területet kiválasztva, ha lehetséges az átcsoportosítás, zöldre színeződnek a körülötte lévő, saját szomszédok, ez látható a 24. ábrán. Ezek közül valamelyikre kattintva megjelenik a kiválasztott katonák mennyiségének megadására szolgáló Slider. Az átcsoportosítható katonák száma minimum 1, maximum a területen lévő katonák számánál egyel kisebb. Az „ok” gomb megnyomására megtörténik a katonák átcsoportosítása a zölden kijelölt területre és elkezdődik a gép köre. A „mégse” gomb megnyomására, vagy a térképre kattintás hatására megszűnnek az erre vonatkozó kijelölések és másik területet lehet választani. Csak egy területről lehet katonákat átcsoportosítani egy másikra. A mozgatás kihagyható, az „átcsoportosítás vége” vagy a „gép köre” gomb megnyomásával. Ha olyan terület került kiválasztásra, melyről nem történhet átcsoportosítás, vagyis ahol csak egy katona van, a körülötte lévő saját, szomszédos területek fehérre színeződnek, mint ahogy a 25. ábrán is látható, és valamelyikre kattintva megjelenik az ehhez megfelelő üzenet, a kijelölés megszűnik és új megyét lehet választani.  
+Egy saját területet kiválasztva, ha lehetséges az átcsoportosítás, zöldre színeződnek a körülötte lévő, saját szomszédok, ez látható a \ref{fig_move1} ábrán. Ezek közül valamelyikre kattintva megjelenik a kiválasztott katonák mennyiségének megadására szolgáló Slider. Az átcsoportosítható katonák száma minimum 1, maximum a területen lévő katonák számánál egyel kisebb. Az „ok” gomb megnyomására megtörténik a katonák átcsoportosítása a zölden kijelölt területre és elkezdődik a gép köre. A „mégse” gomb megnyomására, vagy a térképre kattintás hatására megszűnnek az erre vonatkozó kijelölések és másik területet lehet választani. Csak egy területről lehet katonákat átcsoportosítani egy másikra. A mozgatás kihagyható, az „átcsoportosítás vége” vagy a „gép köre” gomb megnyomásával. Ha olyan terület került kiválasztásra, melyről nem történhet átcsoportosítás, vagyis ahol csak egy katona van, a körülötte lévő saját, szomszédos területek fehérre színeződnek, mint ahogy a \ref{fig_move3} ábrán is látható, és valamelyikre kattintva megjelenik az ehhez megfelelő üzenet, a kijelölés megszűnik és új megyét lehet választani.  
 
  
 \Figure {move3}{Átcsoportosítás 3.}{width=15cm}
 
 
-Az átcsoportosítás után a gép következik. Amíg az ő köre zajlik, a 26. ábrán látható gombok nem lesznek elérhetőek a felhasználó számára: 
+Az átcsoportosítás után a gép következik. Amíg az ő köre zajlik, a \ref{fig_ai} ábrán látható gombok nem lesznek elérhetőek a felhasználó számára: 
 
 \Figure {ai}{A gép köre}{width=15cm}
 
 
-A gép körében minden esetben 5 katona kerül lehelyezésre az erősítési fázisban, a támadási fázisban véletlenszerű területről támad, és ha tud, akkor a mozgatási fázisban egyik területéről egy másikra átcsoportosít véletlen számú katonát. Az „eddigi dobások” gomb megnyomására megjelennek a játékban az eddigi, támadásokra vonatkozó legnagyobb dobások, ez látható a 27. ábrán. Ez a lista, a gép körében megnyitva automatikusan frissül. 
+A gép körében minden esetben 5 katona kerül lehelyezésre az erősítési fázisban, a támadási fázisban véletlenszerű területről támad, és ha tud, akkor a mozgatási fázisban egyik területéről egy másikra átcsoportosít véletlen számú katonát. Az „eddigi dobások” gomb megnyomására megjelennek a játékban az eddigi, támadásokra vonatkozó legnagyobb dobások, ez látható a \ref{fig_log} ábrán. Ez a lista, a gép körében megnyitva automatikusan frissül. 
 
 \Figure {log}{Kockadobás napló}{width=15cm}
 
 
-Ha a Strava weboldalára feltöltésre került valamilyen aktivitás, akkor az ezalatt megtett út megjelenik a felületen a gép köre után, vagy a frissítés gomb megnyomásának hatására, méterben, mint ahogy a 28. ábrán is látszik. 
+Ha a Strava weboldalára feltöltésre került valamilyen aktivitás, akkor az ezalatt megtett út megjelenik a felületen a gép köre után, vagy a frissítés gomb megnyomásának hatására, méterben, mint ahogy a \ref{fig_refresh} ábrán is látszik. 
 
 \Figure {refresh}{Pontszámok frissítése}{width=15cm}
 
