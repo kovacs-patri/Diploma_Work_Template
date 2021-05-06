@@ -129,21 +129,21 @@ A Quantum Toolkit az előbbiek feletti absztrakciós szint, mely megkönnyíti e
 JavaFX alkalmazás futtatásakor a következő két fő szál jön létre: 
 
 \begin{itemize}
-\item JavaFX Application Thread 
-\item JavaFX Launcher 
+\item \CodeName{JavaFX Application Thread}
+\item \CodeName{JavaFX Launcher}
 \end{itemize}
 
-Egy JavaFX alkalmazás az Application osztályból öröklődik.
-Az alkalmazás életciklusa alatt az Application osztály launch() metódusának meghívásakor a következő metódusok futnak le az alábbi sorrendben: 
+Egy JavaFX alkalmazás az \CodeName{Application} osztályból öröklődik.
+Az alkalmazás életciklusa alatt az \CodeName{Application} osztály \CodeName{launch()} metódusának meghívásakor a következő metódusok futnak le az alábbi sorrendben: 
 
 \begin{itemize}
 \item paraméter nélküli konstruktor 
-\item init() 
-\item start() 
+\item \CodeName{init()}
+\item \CodeName{start()}
 \end{itemize}
 
-Az init() metódus a JavaFX Launcher Thread-ben hívódik meg, a start() pedig a JavaFX Application Thread-ben.
-Amikor az alkalmazás leáll, akkor a stop() metódus hívódik meg, bezárni pedig a Platform.exit() metódussal lehet.  
+Az \CodeName{init()} metódus a \CodeName{JavaFX Launcher Thread}-ben hívódik meg, a \CodeName{start()} pedig a \CodeName{JavaFX Application Thread}-ben.
+Amikor az alkalmazás leáll, akkor a \CodeName{stop()} metódus hívódik meg, bezárni pedig a \CodeName{Platform.exit()} metódussal lehet.  
 
 \subsection*{Model-View-Controller (MVC) és a JavaFX}
 
@@ -196,17 +196,17 @@ Könyvtárstruktúrája a \ref{fig_mintaProjekt} ábrán látható módon épül
 \Figure {mintaProjekt}{Egy minta Maven-JavaFX program struktúrája}{height=10cm}
 
 
-Az App.java egy futtatható osztályt tartalmaz, ezzel indul el a JavaFX alkalmazás.
-Kiterjeszti az Application osztályt, mely tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat.
+Az \CodeName{App.java} egy futtatható osztályt tartalmaz, ezzel indul el a JavaFX alkalmazás.
+Kiterjeszti az \CodeName{Application} osztályt, mely tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat.
 
-Mint minden Maven projektben, itt is megtalálható a POM.xml fájl.
+Mint minden Maven projektben, itt is megtalálható a \CodeName{POM.xml} fájl.
 Tartalmazza a projektre vonatkozó adatokat, mint például verziószám, projekt neve, kódolás, valamint magában foglalja még a függőségeket.
 A build folyamaton belül megtalálható, hogy milyen plugin-ok segítségével épül fel a program. 
 
 A kontroller osztályok hozzáférnek az FXML-ben lévő elemekhez.
 Az ezekben megírt parancsok alapján módosul a felület. 
 
-A projekt strukturán továbbmenve, az Other Sources nevű mappán belül található meg a két .fxml kiterjesztésű FXML fájl, amelyek a view-t adják.
+A projekt strukturán továbbmenve, az \CodeName{Other Sources} nevű mappán belül található meg a két \CodeName{.fxml} kiterjesztésű FXML fájl, amelyek a view-t adják.
 Ebben a projektben gombnyomásra csere történik a két felület között.
 Mint már korábban említettem, az FXML egy XML alapú nyelv, melyet a JavaFX alkalmazások felhasználói felületének szerkesztéséhez fejlesztettek, hogy a program felépítése megfeleljen az MVC tervezési mintának.
 Így, ha csak a kinézeten szeretnénk változtatni, nem szükséges átírni a Java kódot, elég lehet csak az FXML-t szerkeszteni.
@@ -252,6 +252,7 @@ XML alternatívaként használják, leggyakrabban egy webalkalmazás és egy sze
 
 Egy példa alapján bemutatom a felépítését. 
 
+\begin{lstlisting}[language=Java]
 {"cars": [{ 
 "brand": "Ford", 
 "model": "Mustang", 
@@ -266,9 +267,10 @@ Egy példa alapján bemutatom a felépítését.
 "owner": null 
         } 
 ]} 
+\end{lstlisting}
 
 Egy objektumra vonatkozó adatok { és } írandók.
-A példában egy "cars" nevű objektum található, mely egy tömbbel rendelkezik, ami két objektumot tartalmaz.
+A példában egy "\CodeName{cars}" nevű objektum található, mely egy tömbbel rendelkezik, ami két objektumot tartalmaz.
 A tömb elemei [ és ] közé írandók.
 
 Mint látható, egy objektum több név-érték párt is tartalmazhat, ezeket vesszővel kell elválasztani.
