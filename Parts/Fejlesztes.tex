@@ -53,37 +53,23 @@ https://www.strava.com/oauth/authorize?client_id=[CLIENT_ID]&response_type=code&
 
 Az URL-ben szereplő [CLIENT\_ID] a Strava weboldalán bejelentkezett felhasználóként létrehozott App client id-jével kiegészítendő. Mivel az authentikációra való engedély megadása csak a Strava oldalára való bejelentkezés után érhető el, így ennek az URL-nek a betöltésére a https://www.strava.com/login címre irányít át, ahol el kell végezni a bejelentkezést. Ezután már betöltődik az authentikációhoz szükséges cím, melyen meg kell adni az engedélyt a folytatáshoz. Amint ez megtörtént, egy olyan URL-re következik az átirányítás, mely tartalmazza a szükséges Tokenek beszerzéséhez szükséges kódot. Ez a cím tartalmazza a localhost/ szövegrészt, így erre beállítottam egy Listener-t, mely az URL változását figyeli. Ha tartalmazza a localhost/ szövegrészt, az azt jelenti, hogy megtörtént az authentikáció. Ebben az esetben meghívódik egy metódus, amely a legutóbb betöltött címből eléri a szükséges kódot, ezt beilleszti az Access és a Refresh Token kéréséhez szükséges URL-be, majd lefut a tokenek beszerzéséért felelős metódus. 
 
-\begin{verbatim}
+\begin{lstlisting}[language=Java]
 public void webViewLogin() { 
-
-webPane.setVisible(true); 
-
-login.setWebEngine(webView.getEngine()); 
-
-login.getWebEngine().getLoadWorker().stateProperty(). 
-
-addListener((ov, oldState, newState) -> { 
-
-webPane.setVisible(false); 
-
-loginPane.setVisible(true); 
-
-          	apiRequest(login.getWebEngine().getLocation()); 
-
-           deleteFile(); 
-
-           createAthleteObject(); 
-
-           loginPane.setVisible(true); 
-
-            } 
-
-        }); 
-
-        login.getWebEngine().load(login.getAuthURL()); 
-
+  webPane.setVisible(true); 
+  login.setWebEngine(webView.getEngine()); 
+  login.getWebEngine().getLoadWorker().stateProperty(). 
+  addListener((ov, oldState, newState) -> { 
+    webPane.setVisible(false); 
+    loginPane.setVisible(true); 
+    apiRequest(login.getWebEngine().getLocation()); 
+    deleteFile(); 
+    createAthleteObject(); 
+    loginPane.setVisible(true); 
     } 
-\end{verbatim}
+  }); 
+  login.getWebEngine().load(login.getAuthURL()); 
+} 
+\end{lstlisting}
  
 
 A kapcsolat megnyitásához szükséges Access Token-t, illetve a későbbiekben az ezt frissítő Refresh Token-t a következő URL címre történő HTTP POST kéréssel kapom meg, ahol a [CLIENT\_ID] és [CLIENT\_SECRET] a Strava weboldalán létrehozott App client id-jével, és client secret-ével kiegészítendő:
