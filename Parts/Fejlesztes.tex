@@ -3,26 +3,26 @@ Először bemutatom a projekt forrásának könyvtárszerkezetét, felépítés�
 Ezután megmutatom, hogy miképpen lehet egy alkalmazást regisztrálni a Strava weboldalán, majd rátérek  a szükséges Strava felhasználói adatok elérésének megvalósítására.
 Ezt követően részletezem a játék logikájáért felelős osztályokat, illetve a két rész kapcsolatát, végül pedig szót ejtek a kinézet szerkesztéséről is.
 
-\section{A projekt főbb fájljainak részletezése}
+\section{A projekt főbb fájljainak részletezése}\label{fobbFajlok}
 
 
 A projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán látható:
 
-\Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=12cm}
+\Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=10cm}
 
-Az \CodeName{App.java} egy futtatható osztály, ami mint a … fejezetben is említettem, ez tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat.
+Az \CodeName{App.java} egy futtatható osztály, ami mint a \ref{javafxMinta} fejezetben is említettem, ez tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat.
 Metódusai közül a \CodeName{start} egy absztrakt metódus, melyet kötelezően felül kell írni.
 
 
-\begin{verbatim}
+\begin{lstlisting}[language=Java]
 @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Strava");
-        scene = new Scene(loadFXML("sample"));
-        primaryStage.setScene(scene);
-        primaryStage.show();
+public void start(Stage primaryStage) throws Exception {
+  primaryStage.setTitle("Strava");
+  scene = new Scene(loadFXML("sample"));
+  primaryStage.setScene(scene);
+  primaryStage.show();
     }
-\end{verbatim}
+\end{lstlisting}
  
 A \CodeName{start} metódusban kell megadni a megjelenítendő \CodeName{Stage}-et, és annak beállításait.
 A \CodeName{Scene} objektum a jelenetgráf összes tartalmazott elemének tárolója, mely a \CodeName{Stage}-n megjelenítendő view-t tartalmazó FXML-t várja az ablakméretre vonatkozó értékekkel együtt.
@@ -31,12 +31,14 @@ Ezt a \CodeName{Stage}-nek beállítva a \CodeName{show} metódussal érhetjük 
 Ez az osztály ezen kívül tartalmaz még egy \CodeName{setRoot} és egy \CodeName{main} metódust, valamint egy \CodeName{loadFXML} függvényt.
 A \CodeName{loadFXML} függvény a megfelelő FXML fájl betöltéséért felel.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Java]
 private Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+  FXMLLoader fxmlLoader = new FXMLLoader
+  (getClass().getClassLoader()
+  .getResource(fxml + ".fxml"));
+  return fxmlLoader.load();
     } 
-\end{verbatim}
+\end{lstlisting}
  
 Az FXML betöltéséért az \CodeName{FXMLLoader} osztály felel, mely a \CodeName{javafx.fxml} csomagban található.
 Számos konstruktort tartalmaz, melyek segítségével betölthetjük a dokumentumot.
@@ -45,16 +47,20 @@ A \CodeName{load} metódusa visszaadja \CodeName{Parent} típusként az FXML for
 
 A \CodeName{setRoot} nevű metódus beállítja az adott \CodeName{Scene}-hez a paraméterében megadott FXML-t.
 
-\begin{verbatim}
-
+\begin{lstlisting}[language=Java]
 public void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    } 
-A main metódus pedig csak az Application osztály launch() függvényét tartalmazza. 
-        public static void main(String[] args) {
-        launch();
+  scene.setRoot(loadFXML(fxml));
     }
-\end{verbatim}
+\end{lstlisting}
+ 
+
+A main metódus pedig csak az \CodeName{Application} osztály \CodeName{launch} függvényét tartalmazza. 
+
+\begin{lstlisting}[language=Java]
+public static void main(String[] args) {
+  launch();
+    }
+\end{lstlisting}
 
 A \CodeName{POM.xml} fájl felépítésére a \ref{fig_pom} ábrán található egy minta.
 Tartalmazza a projektre vonatkozó adatokat, mint például verziószám, projekt neve, kódolás. 
@@ -62,16 +68,18 @@ Tartalmazza a projektre vonatkozó adatokat, mint például verziószám, projek
 \Figure {pom}{A POM.XML fájl tartalma}{width=12cm}
 
  
-Mint a \ref{pom2} ábrán is látható, az alkalmazás függőséget is tartalmaz.
+Mint a \ref{fig_pom2} ábrán is látható, az alkalmazás függőséget is tartalmaz.
 Az ábrán csak a JavaFX \CodeName{contols}-ra és az \CodeName{fxml}-re vonatkozóan, melyek elérhetőek a Maven Central Repository-ból. 
   
 \Figure {pom2}{POM.XML fájl, függőségek}{width=12cm}
 
-Ezalatt a build folyamathoz szükséges plugin-ok beállítása található, melyre egy példa a \ref{build} ábrán látható: 
+Ezalatt a build folyamathoz szükséges plugin-ok beállítása található, melyre egy példa a \ref{fig_build} ábrán látható: 
 
 
 \Figure {build}{POM.XML fájl, build folyamatok}{width=12cm}
- 
+
+
+A \ref{fig_fxml} ábrán egy FXML fájl látható.
 
 \Figure {fxml}{FXML fájl}{width=12cm}
  
@@ -126,9 +134,9 @@ Lehetséges a Strava publikus API-ján keresztül, vagy akár csak egyszerű HTT
 A nyilvános API a Swagger Codegen kódgenerátor segítségével generálható le a hozzá tartozó URL címen található JSON fájlból, különböző programozási nyelvekre.
 Itt látható egy minta parancs az API kódjának generálására: 
 
-\begin{verbatim}
+\begin{lstlisting}[language=Java]
 $ swagger-codegen generate -i https://developers.strava.com/swagger/swagger.json -l java -o generated/java 
-\end{verbatim}
+\end{lstlisting}
 
 A \CodeName{-i} kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generálandó kód.
 A \CodeName{-l} kapcsolóval lehet megjelölni, hogy mely programozási nyelven szeretnénk megkapni az eredményt, a \CodeName{-o} beírása után pedig a célkönyvtár elérési útját kell megadni.
@@ -162,12 +170,17 @@ A következőkben leírom ennek a megvalósítását, amit a \CodeName{Controlle
 A program felhasználói felületén elhelyeztem egy \CodeName{WebView-}t, mely a \CodeName{javafx.scene.web} csomagjában található, és webes felület megjelenítésére szolgál.
 Az autentikációhoz szükséges URL a következő, melyet a \CodeName{WebView}-hoz beállított \CodeName{WebEngine} megpróbál betölteni: 
 
-\begin{verbatim}
+\url{
 https://www.strava.com/oauth/authorize?client_id=[CLIENT_ID]&response_type=code&redirect_uri=http://localhost&approval_prompt=force&scope=activity:read_all 
-\end{verbatim}
+}
 
 Az URL-ben szereplő \CodeName{[CLIENT\_ID]} a Strava weboldalán bejelentkezett felhasználóként létrehozott App Client Id-jével kiegészítendő.
-Mivel az autentikációra való engedély megadása csak a Strava oldalára való bejelentkezés után érhető el, így ennek az URL-nek a betöltésére a https://www.strava.com/login címre irányít át, ahol el kell végezni a bejelentkezést. Ezután már betöltődik az authentikációhoz szükséges cím, melyen meg kell adni az engedélyt a folytatáshoz. Amint ez megtörtént, egy olyan URL-re következik az átirányítás, mely tartalmazza a szükséges Tokenek beszerzéséhez szükséges kódot. Ez a cím tartalmazza a localhost/ szövegrészt, így erre beállítottam egy Listener-t, mely az URL változását figyeli. Ha tartalmazza a localhost/ szövegrészt, az azt jelenti, hogy megtörtént az authentikáció. Ebben az esetben meghívódik egy metódus, amely a legutóbb betöltött címből eléri a szükséges kódot, ezt beilleszti az Access és a Refresh Token kéréséhez szükséges URL-be, majd lefut a tokenek beszerzéséért felelős metódus. 
+Mivel az autentikációra való engedély megadása csak a Strava oldalára való bejelentkezés után érhető el, így ennek az URL-nek a betöltésére a \url{https://www.strava.com/login} címre irányít át, ahol el kell végezni a bejelentkezést.
+Ezután már betöltődik az autentikációhoz szükséges cím, melyen meg kell adni az engedélyt a folytatáshoz.
+Amint ez megtörtént, egy olyan URL-re következik az átirányítás, mely tartalmazza a szükséges tokenek beszerzéséhez szükséges kódot.
+Ez a cím tartalmazza a \CodeName{localhost/} szövegrészt, így erre beállítottam egy \CodeName{Listener}-t, mely az URL változását figyeli.
+Ha tartalmazza a \CodeName{localhost/} szövegrészt, az azt jelenti, hogy megtörtént az autentikáció.
+Ebben az esetben meghívódik egy metódus, amely a legutóbb betöltött címből eléri a szükséges kódot, ezt beilleszti az Access és a Refresh Token kéréséhez szükséges URL-be, majd lefut a tokenek beszerzéséért felelős metódus. 
 
 \begin{lstlisting}[language=Java]
 public void webViewLogin() { 
@@ -175,49 +188,82 @@ public void webViewLogin() {
   login.setWebEngine(webView.getEngine()); 
   login.getWebEngine().getLoadWorker().stateProperty(). 
   addListener((ov, oldState, newState) -> { 
-    webPane.setVisible(false); 
-    loginPane.setVisible(true); 
-    apiRequest(login.getWebEngine().getLocation()); 
+  webPane.setVisible(false); 
+  loginPane.setVisible(true);
+  apiRequest(login.getWebEngine().getLocation()); 
     deleteFile(); 
     createAthleteObject(); 
     loginPane.setVisible(true); 
-    } 
-  }); 
+     } 
+   }); 
   login.getWebEngine().load(login.getAuthURL()); 
-} 
+    } 
 \end{lstlisting}
  
 
-A kapcsolat megnyitásához szükséges Access Token-t, illetve a későbbiekben az ezt frissítő Refresh Token-t a következő URL címre történő HTTP POST kéréssel kapom meg, ahol a [CLIENT\_ID] és [CLIENT\_SECRET] a Strava weboldalán létrehozott App client id-jével, és client secret-ével kiegészítendő:
+A kapcsolat megnyitásához szükséges Access Token-t, illetve a későbbiekben az ezt frissítő Refresh Token-t a következő URL címre történő HTTP POST kéréssel kapom meg, ahol a \CodeName{[CLIENT\_ID]} és \CodeName{[CLIENT\_SECRET]} a Strava weboldalán létrehozott App Client Id-jével, és Client Secret-ével kiegészítendő:
 
-\begin{verbatim}
+\url{
 https://www.strava.com/oauth/token?client_id=[CLIENT_ID]&client_secret=[CLIENT_SECRET] 
-\end{verbatim}
+}
 
-A válasz egy JSON objektum, mely tartalmazza az access token-t, a refresh token-t, illetve hogy az access token meddig érvényes Unix epoch időben, ami a UTC 1970.01.01. éjféltől eltelt másodpercek száma , valamint tartalmazza még a felhasználóra vonatkozó általános adatokat, úgy, mint a neve, neme, lakhelye, stb. Itt beállítom a felhasználóhoz a két tokent, illetve a lejárati időt, valamint a játékos nevét. A java.time.Instant programcsomag tartalmaz egy Instant.now().getEpochSecond() függvényt, mely visszaadja az éppen jelenlegi rendszeridőt epoch másodpercben, ezzel hasonlítom össze egy metódusban az eltárolt lejárati időt az aktuális rendszeridővel. 
+A válasz egy JSON objektum, mely tartalmazza az Access Token-t, a Refresh Token-t, illetve hogy az Access Token meddig érvényes Unix epoch időben, ami a UTC 1970.01.01. éjféltől eltelt másodpercek száma , valamint tartalmazza még a felhasználóra vonatkozó általános adatokat, úgy, mint a neve, neme, lakhelye, stb.
+Itt beállítom a felhasználóhoz a két tokent, illetve a lejárati időt, valamint a játékos nevét.
+A \CodeName{java.time.Instant} programcsomag tartalmaz egy \CodeName{Instant.now().getEpochSecond()} függvényt, mely visszaadja az éppen jelenlegi rendszeridőt epoch másodpercben, ezzel hasonlítom össze egy metódusban az eltárolt lejárati időt az aktuális rendszeridővel. 
 
-Ha lejárt a token, akkor a következő URL címre küldve egy HTTP POST kérést megkapom az új access token-t, és ennek lejáratát:
+Ha lejárt a token, akkor a következő URL címre küldve egy HTTP POST kérést megkapom az új Access Token-t, és ennek lejáratát:
 
-\begin{verbatim}
+\url{
 https://www.strava.com/oauth/token?client_id=[CLIENT_ID]&client_secret=[CLIENT_SECRET]&refresh_token=[REFRESH_TOKEN]&grant_type=refresh_token 
-\end{verbatim}
+}
 
-Az URL-ben lévő [CLIENT\_ID] és [CLIENT\_SECRET] a már korábban említett client id-t és client secret-et jelenti, a [REFRESH\_TOKEN]-t pedig a bejelentkezett felhasználóhoz beállított User objektumból érem el. A válasz pedig szintén egy JSON objektum, de ez csak a token-ekre vonatkozó információkat tartalmazza. 
+Az URL-ben lévő \CodeName{[CLIENT\_ID]} és \CodeName{[CLIENT\_SECRET]} a már korábban említett Client Id-t és Client Secret-et jelenti, a \CodeName{[REFRESH\_TOKEN]}-t pedig a bejelentkezett felhasználóhoz beállított \CodeName{User} objektumból érem el.
+A válasz pedig szintén egy JSON objektum, de ez csak a tokenekre vonatkozó információkat tartalmazza. 
 
-Amint megtörtént a bejelentkezés, megtörténik a User aktivitási listájának lekérdezése. A következő URL-re történő HTTP GET kéréssel megkapható a felhasználó aktivitási listája, mely JSONArray-ként érkezik a válaszban, amit eltárolok a User objektumban:
+Amint megtörtént a bejelentkezés, megtörténik a \CodeName{User} aktivitási listájának lekérdezése.
+A következő URL-re történő HTTP GET kéréssel megkapható a felhasználó aktivitási listája, mely \CodeName{JSONArray}-ként érkezik a válaszban, amit eltárolok a \CodeName{User} objektumban:
 
-\begin{verbatim}
+\url{
 https://www.strava.com/api/v3/athlete/activities?access_token=[ACCESS_TOKEN] 
-\end{verbatim}
-
+}
 
 Ezeken kívül ebben az osztályban történnek még a különböző gombokra vonatkozó események kezelése is. 
 
-A HttpRequest osztály csak két függvényt tartalmaz, a HTTP kérésekre vonatkozóan. Csak a POST függvényt részletezem, mivel a kettő között csak a visszatérési értékben és a kérés típusában van lényeges különbség. 
+A \CodeName{HttpRequest} osztály csak két függvényt tartalmaz, a HTTP kérésekre vonatkozóan.
+Csak a POST függvényt részletezem, mivel a kettő között csak a visszatérési értékben és a kérés típusában van lényeges különbség.
 
-A java.net programcsomagja tartalmazza az URL és a HttpURLConnection osztályokat, melyeket a kapcsolat megnyitására használtam a szóban forgó függvényekben. Az elérni kívánt URL címét String-ként kapja meg a függvény, melyet URL objektummá alakít, ezután megnyitja erre a kapcsolatot. Beállítottam a kérés típusát, jelen esetben POST-ot, mely output-ját egy StringBuilder változóba összefűzi, majd ezt a választ átadja egy JSON objektumnak, amivel a függvény visszatér. 
 
-A User osztályban a bejelentkezett felhasználóra vonatkozó információkat, valamint az ezeket beállító és lekérő függvényeket és metódusokat tárolom, illetve itt találhatók meg a megtett távolságokat és a pontokat számoló függvények. A felhasználóról a következő adatokat tárolom: 
+\begin{lstlisting}[language=Java]
+public JSONObject httpPOST(String urlString){
+  JSONObject myResponse = new JSONObject();
+  try {
+    URL url = new URL(urlString);
+    HttpURLConnection conn = (HttpURLConnection)
+    url.openConnection();
+    conn.setRequestMethod("POST");
+    conn.setDoOutput(true);
+    Reader in = new BufferedReader(new InputStreamReader
+    (conn.getInputStream(), "UTF-8"));
+    StringBuilder sb = new StringBuilder();
+    for (int c; (c = in.read()) >= 0;) {
+      sb.append((char) c);
+      }
+    String response = sb.toString();
+    myResponse = new JSONObject(response.toString());   
+    } catch (IOException e) {
+      Logger.getLogger(HttpRequest.class.getName()).log(Level.SEVERE, null, e);
+      }
+    return myResponse;
+    }
+\end{lstlisting}
+
+
+A \CodeName{java.net} programcsomagja tartalmazza az URL és a \CodeName{HttpURLConnection} osztályokat, melyeket a kapcsolat megnyitására használtam a szóban forgó függvényekben.
+Az elérni kívánt URL címét String-ként kapja meg a függvény, melyet URL objektummá alakít, ezután megnyitja erre a kapcsolatot.
+Beállítottam a kérés típusát, jelen esetben POST-ot, mely output-ját egy \CodeName{StringBuilder} változóba összefűzi, majd ezt a választ átadja egy JSON objektumnak, amivel a függvény visszatér. 
+
+A \CodeName{User} osztályban a bejelentkezett felhasználóra vonatkozó információkat, valamint az ezeket beállító és lekérő metódusokat tárolom, illetve itt találhatók meg a megtett távolságokat és a pontokat számoló függvények.
+A felhasználóról a következő adatokat tárolom: 
 
 \begin{itemize}
 \item név 
@@ -235,123 +281,259 @@ A User osztályban a bejelentkezett felhasználóra vonatkozó információkat, 
 
 \section{Játék logika megvalósítása}
 
-Magához a játék megvalósításához öt Java osztályt és egy hozzá tartozó FXML fájt készítettem. A Java osztályok név szerint a következők: 
+Magához a játék megvalósításához öt Java osztályt és egy hozzá tartozó FXML fájt készítettem.
+A Java osztályok név szerint a következők: 
 
 \begin{itemize}
-\item Country 
-\item CountryDiceRoll 
-\item GameEngine 
-\item MapFXMLController 
-\item Map 
+\item \CodeName{Country}
+\item \CodeName{CountryDiceRoll}
+\item \CodeName{GameEngine}
+\item \CodeName{MapFXMLController}
+\item \CodeName{Map}
 \end{itemize}
 
 A következőkben ezen osztályok tartalmát részletezem. 
 
-A Country osztály tartalmazza a megyékre vonatkozó információkat, úgy, mint az id-je, mely egy egyedi azonosító, magában foglalja, hogy hány katona van az adott területen, annak birtokosát, és mivel körökkel jelöltem meg a felületen a megyéket, így a hozzá tartozó, javafx.scene.shape csomag által nyújtott kört is itt tárolom, valamint az ezen megjelenő szöveget is, mely a területen tartózkodó katonák számát jeleníti meg. 
+A \CodeName{Country} osztály tartalmazza a megyékre vonatkozó információkat, úgy, mint az id-je, mely egy egyedi azonosító, magában foglalja, hogy hány katona van az adott területen, annak birtokosát, és mivel körökkel jelöltem meg a felületen a megyéket, így a hozzá tartozó, \CodeName{javafx.scene.shape} csomag által nyújtott kört is itt tárolom, valamint az ezen megjelenő szöveget is, mely a területen tartózkodó katonák számát jeleníti meg. 
 
-Ebben az osztályban találhatók még az ezeket lekérő, illetve beállító függvények és metódusok, valamint különböző függvények arra vonatkozóan, hogy eldöntésre kerüljön, hogy két megye ugyanannak a játékosnak a birtokában van-e, hogy az adott területről hány katonával támadhat és hánnyal védekezhet, továbbá egy másik terület megtámadására vonatkozó függvény. 
+Ebben az osztályban találhatók még az ezeket lekérő, illetve beállító metódusok, valamint különböző függvények arra vonatkozóan, hogy eldöntésre kerüljön, hogy két megye ugyanannak a játékosnak a birtokában van-e, hogy az adott területről hány katonával támadhat és hánnyal védekezhet, továbbá egy másik terület megtámadására vonatkozó függvény. 
 
-A területről támadó katonák maximális száma 3, a védekezőé pedig 2. A támadás kockadobásokkal történik, amelyért felelős függvények a CountryDiceRoll osztályban találhatók meg. Itt kerül tárolásra a támadó és a védekező fél kockadobásainak listája, a legnagyobb dobás mindkét fél részéről, valamint, hogy hány oldalú a dobókocka és az ezeket beállító, illetve lekérő függvények és metódusok. A kockadobások csökkenő sorrendbe rendezéséért is ennek az osztálynak egy függvénye felel. 
+A területről támadó katonák maximális száma 3, a védekezőé pedig 2.
+A támadás kockadobásokkal történik, amelyért felelős függvények a \CodeName{CountryDiceRoll} osztályban találhatók meg.
+Itt kerül tárolásra a támadó és a védekező fél kockadobásainak listája, a legnagyobb dobás mindkét fél részéről, valamint, hogy hány oldalú a dobókocka és az ezeket beállító, illetve lekérő függvények és metódusok.
+A kockadobások csökkenő sorrendbe rendezéséért is ennek az osztálynak egy függvénye felel. 
 
-A Country osztály tehát a támadásra vonatkozó metódusában ezt használja annak eldöntésére, hogy egy támadás során melyik fél veszít katonát. Egy támadás során vagy az egyik, vagy a másik fél elveszít egy katonát. Amelyik fél nagyobbat dob, az nyer, az ellenféltől pedig levonásra kerül egy katona. Ha megegyezik a két legnagyobb dobás, abban az esetben a védekező fél nyeri a csatát, vagyis a támadó elveszít egy katonát. 
+A \CodeName{Country} osztály tehát a támadásra vonatkozó metódusában ezt használja annak eldöntésére, hogy egy támadás során melyik fél veszít katonát.
+Egy támadás során vagy az egyik, vagy a másik fél elveszít egy katonát.
+Amelyik fél nagyobbat dob, az nyer, az ellenféltől pedig levonásra kerül egy katona.
+Ha megegyezik a két legnagyobb dobás, abban az esetben a védekező fél nyeri a csatát, vagyis a támadó elveszít egy katonát. 
 
-A Map osztály egy HashMap-et tartalmaz a megyék szomszédosságaira vonatkozóan, melynek feltöltése egy JSON fájlból történik. A HashMap tartalmát visszaadó függvényen kívül még a szomszédosságra vonatkozó függvényeket tartalmaz, úgy, mint annak ellenőrzése, hogy két adott megye szomszédos-e, egy megye szomszédsági listája tartalmazza-e a paraméterben megadott megyét, valamint egy adott megye szomszédsági listájának visszaadására vonatkozó függvényt. 
+A \CodeName{Map} osztály egy \CodeName{HashMap}-et tartalmaz a megyék szomszédosságaira vonatkozóan, melynek feltöltése egy JSON fájlból történik.
+A \CodeName{HashMap} tartalmát visszaadó függvényen kívül még a szomszédosságra vonatkozó függvényeket tartalmaz, úgy, mint annak ellenőrzése, hogy két adott megye szomszédos-e, egy megye szomszédsági listája tartalmazza-e a paraméterben megadott megyét, valamint egy adott megye szomszédsági listájának visszaadására vonatkozó függvényt. 
 
-A GameEngine nevű osztály a játékmenetre vonatkozó dolgokat foglalja magában. Tartalmazza a megyék kapcsolatait, valamint azok Country objektumokkal feltöltött listáját, a játékosok listáját, azt, hogy a játékban eddig ki, melyik megyével melyik megyét támadta és mik voltak a dobások, a játék fázisokat, hogy hány katonát kaphatnak a játékosok az adott körben az erősítési fázisban, jelenleg hányadik körben zajlik a játék és a nyertest. 
+A \CodeName{GameEngine} nevű osztály a játékmenetre vonatkozó dolgokat foglalja magában.
+Tartalmazza a megyék kapcsolatait, valamint azok \CodeName{Country} objektumokkal feltöltött listáját, a játékosok listáját, azt, hogy a játékban eddig ki, melyik megyével melyik megyét támadta és mik voltak a dobások, a játék fázisokat, hogy hány katonát kaphatnak a játékosok az adott körben az erősítési fázisban, jelenleg hányadik körben zajlik a játék és a nyertest. 
 
-Magában foglalja még az ezeket beállító és lekérő függvényeket, illetve metódusokat. Itt történik még a Country objektumok létrehozása véletlenszerűen vagy fájlból betöltve, a játék fázisok állítása, az ezektől függő, a felületen megjelenő szövegek állítása, a játékosok léptetése az adott kör végén, ellenőrzések arra vonatkozóan, hogy az adott megye meg tudja-e támadni a kiválasztott ellenfelet, vagy sem, a szomszédos megyék közül két megye szövetségesek-e vagy ellenfelek, annak ellenőrzése, hogy van-e már nyertes, majd ennek beállítása. A következőkben ezeket fogom részletesebben leírni. 
+Magában foglalja még az ezeket beállító és lekérő metódusokat.
+Itt történik még a \CodeName{Country} objektumok létrehozása véletlenszerűen vagy fájlból betöltve, a játék fázisok állítása, az ezektől függő, a felületen megjelenő szövegek állítása, a játékosok léptetése az adott kör végén, ellenőrzések arra vonatkozóan, hogy az adott megye meg tudja-e támadni a kiválasztott ellenfelet, vagy sem, a szomszédos megyék közül két megye szövetségesek-e vagy ellenfelek, annak ellenőrzése, hogy van-e már nyertes, majd ennek beállítása.
+A következőkben ezeket fogom részletesebben leírni. 
 
-Az osztály konstruktorában paraméterként vár egy boolean és egy String változót arra vonatkozóan, hogy új játék betöltésére kerül-e sor, vagy nem és ha nem, akkor milyen nevű fájlt töltsön be. Feltöltésre kerül a kapcsolati lista. A játékos és a gép hozzáadása a játékos listához is itt történik. Új játék indítása esetén egy olyan metódus hívódik meg, amely a kapcsolati listán végigmenve létrehozza az ehhez tartozó Country objektumokat a megfelelő id-vel, 10 és 15 közötti véletlenszerű katonaszámmal, melyet a java.util.concurrent.ThreadLocalRandom csomag ThreadLocalRandom.current().nextInt() függvényével számoltam. 
+Az osztály konstruktorában paraméterként vár egy boolean és egy String változót arra vonatkozóan, hogy új játék betöltésére kerül-e sor, vagy nem és ha nem, akkor milyen nevű fájlt töltsön be.
+Feltöltésre kerül a kapcsolati lista.
+A játékos és a gép hozzáadása a játékos listához is itt történik.
+Új játék indítása esetén egy olyan metódus hívódik meg, amely a kapcsolati listán végigmenve létrehozza az ehhez tartozó \CodeName{Country} objektumokat a megfelelő id-vel, 10 és 15 közötti véletlenszerű katonaszámmal, melyet a \CodeName{java.util.concurrent.ThreadLocalRandom} csomag \CodeName{ThreadLocalRandom.current().nextInt()} függvényével számoltam. 
 
-Amennyiben nem új játék indítására kerülne a sor, hanem már létező mentés betöltésére, úgy egy json fájlból olvasó metódus kerül lefutásra. Ez a konstruktorban megadott String változó nevét kéri paraméterként, ezzel a névvel ellátott fájlt próbálja meg beolvasni. A fájl három JSONArray listájából nyeri ki a szükséges adatokat. Az első lista a megyékre vonatkozik, innét kapja meg a megyék id-jét, a rajtuk lévő katonák számát és a birtokosukat. Egy for ciklusban erre vonatkozóan feltöltésre kerül a megyék listája. A következő vizsgált JSONArray a játékban eddig történő kockadobásokra vonatkozik. Ismét egy for ciklus segítségével zajlik az eddigi dobási lista feltöltése, úgy, mint a játékállás feltöltésénél. Itt a játék aktuális fázisa, az erősítési fázisban elérhető katonák száma, az aktuális játékos id-je kerül feltöltésre, valamint az, hogy hányadik körben áll a játék. 
+Amennyiben nem új játék indítására kerülne a sor, hanem már létező mentés betöltésére, úgy egy JSON fájlból olvasó metódus kerül lefutásra.
+Ez a konstruktorban megadott String változó nevét kéri paraméterként, ezzel a névvel ellátott fájlt próbálja meg beolvasni.
+A fájl három \CodeName{JSONArray} listájából nyeri ki a szükséges adatokat.
+Az első lista a megyékre vonatkozik, innét kapja meg a megyék id-jét, a rajtuk lévő katonák számát és a birtokosukat.
+Egy for ciklusban erre vonatkozóan feltöltésre kerül a megyék listája.
+A következő vizsgált \CodeName{JSONArray} a játékban eddig történő kockadobásokra vonatkozik.
+Ismét egy for ciklus segítségével zajlik az eddigi dobási lista feltöltése, úgy, mint a játékállás feltöltésénél. Itt a játék aktuális fázisa, az erősítési fázisban elérhető katonák száma, az aktuális játékos id-je kerül feltöltésre, valamint az, hogy hányadik körben áll a játék. 
 
-A játék fázisai enum-okkal vannak jelölve. A fázisok sorban a következők: 
+A játék fázisai \CodeName{Enum}-okkal vannak jelölve.
+A fázisok sorban a következők: 
 
 \begin{itemize}
-\item REINFORCE 
-\item SELECT\_REGION 
-\item SELECT\_ENEMY
-\item ATTACK 
-\item MOVE\_SELECT\_FIRST 
-\item MOVE\_SELECT\_SECOND
+\item \CodeName{REINFORCE}
+\item \CodeName{SELECT\_REGION}
+\item \CodeName{SELECT\_ENEMY}
+\item \CodeName{ATTACK}
+\item \CodeName{MOVE\_SELECT\_FIRST}
+\item \CodeName{MOVE\_SELECT\_SECOND}
 \end{itemize}
 
-A REINFORCE az erősítési fázist jelzi, itt történik az adott körben felhasználható katonák hozzáadása a saját területekhez, egyesével. A SELECT\_REGION az erősítést követő, azt a saját terület kiválasztását jelöli, amivel támadni szeretne a játékos, a SELECT\_ENEMY azt jelzi, hogy ellenfél választása következik épp, ATTACK fázisba lép, amint támadás történt és amíg zajlik. Ezt követően következik a MOVE\_SELECT\_FIRST, amely a saját katonák egy másik, saját, szomszédos területre való átcsoportosítását jelzi, annak is azt a részét, amikor olyan területet kell kijelölni, amelyről át szeretnénk vinni a katonákat máshová. A MOVE\_SELECT\_SECOND pedig az utolsó fázis egy játékos körében, amikor ki kell választani, hogy hová szeretnénk áthelyezni a katonákat. 
+A \CodeName{REINFORCE} az erősítési fázist jelzi, itt történik az adott körben felhasználható katonák hozzáadása a saját területekhez, egyesével.
+A \CodeName{SELECT\_REGION} az erősítést követő, azt a saját terület kiválasztását jelöli, amivel támadni szeretne a játékos, a \CodeName{SELECT\_ENEMY} azt jelzi, hogy ellenfél választása következik épp, \CodeName{ATTACK} fázisba lép, amint támadás történt és amíg zajlik.
+Ezt követően következik a \CodeName{MOVE\_SELECT\_FIRST}, amely a saját katonák egy másik, saját, szomszédos területre való átcsoportosítását jelzi, annak is azt a részét, amikor olyan területet kell kijelölni, amelyről át szeretnénk vinni a katonákat máshová.
+A \CodeName{MOVE\_SELECT\_SECOND} pedig az utolsó fázis egy játékos körében, amikor ki kell választani, hogy hová szeretnénk áthelyezni a katonákat. 
 
-A kör végén megtörténik a felhasználható katonák számának beállítása, az aktuális játékos a következő játékosra való léptetése, valamint a REINFORCE fázis beállítása. A különböző fázisokban történő megyékkel kapcsolatos ellenőrzések, valamint a támadással kapcsolatos metódus is ebben az osztályban találhatók meg. 
+A kör végén megtörténik a felhasználható katonák számának beállítása, az aktuális játékos a következő játékosra való léptetése, valamint a \CodeName{REINFORCE} fázis beállítása.
+A különböző fázisokban történő megyékkel kapcsolatos ellenőrzések, valamint a támadással kapcsolatos metódus is ebben az osztályban találhatók meg. 
 
-Két megye akkor ellenfél, ha különböző a birtokosuk. Egy megye csak akkor tud megtámadni egy másikat, ha szomszédok és különböző játékos birtokolja őket. Két megye akkor szövetséges, ha ugyanaz a játékos birtokolja őket. Külön függvényben szerepel, ha ők emellett szomszédok is. 
+Két megye akkor ellenfél, ha különböző a birtokosuk.
+Egy megye csak akkor tud megtámadni egy másikat, ha szomszédok és különböző játékos birtokolja őket.
+Két megye akkor szövetséges, ha ugyanaz a játékos birtokolja őket.
+Külön függvényben szerepel, ha ők emellett szomszédok is. 
 
-A GameEngine osztály tartalmaz még egy megye elfoglalására vonatkozó metódust, mely átállítja az elfoglalt terület birtoklójának nevét a támadó nevére, valamint a két megye katona számát is beállítja. Az elfoglalt területen annyi katona lesz, amennyivel a támadó megtámadta, a támadó területén pedig ennyivel kevesebb. A játék nyertesének eldöntése pedig annak ellenőrzésével történik, hogy a játékosoknak van-e még olyan területe, amelyről támadni tud, ha valamelyiknek nincs már ilyen, akkor vége a játéknak. 
+A \CodeName{GameEngine} osztály tartalmaz még egy megye elfoglalására vonatkozó metódust, mely átállítja az elfoglalt terület birtoklójának nevét a támadó nevére, valamint a két megye katona számát is beállítja.
+Az elfoglalt területen annyi katona lesz, amennyivel a támadó megtámadta, a támadó területén pedig ennyivel kevesebb.
+A játék nyertesének eldöntése pedig annak ellenőrzésével történik, hogy a játékosoknak van-e még olyan területe, amelyről támadni tud, ha valamelyiknek nincs már ilyen, akkor vége a játéknak. 
 
-Végül pedig a MapFXMLController osztály tartalmazza az FXML fájlban lévő komponensekre vonatkozó események irányításáért és a felület változásáért felelős metódusokat, valamint itt zajlik a játékmenet irányítása, az ehhez kapcsolódó függvények is itt találhatók. A következőkben ezeket részletezem. 
+Végül pedig a \CodeName{MapFXMLController} osztály tartalmazza az FXML fájlban lévő komponensekre vonatkozó események irányításáért és a felület változásáért felelős metódusokat, valamint itt zajlik a játékmenet irányítása, az ehhez kapcsolódó függvények is itt találhatók.
+A következőkben ezeket részletezem. 
 
-Az osztály magában foglal a GameEngine osztályból egy példányt, az aktuálisan kiválasztott területekhez kapcsolódó változókat, a gép választható területeire vonatkozó listát, illetve az aktuálisan kiválasztott terület szomszédossági listáit a szövetségesekre, valamint az ellenfelekre vonatkozóan. Az FXML dokumentumban megfogalmazott ArrayList objektumot a térképen lévő köröket tartalmazó StackPane elemekhez kapcsolódóan, valamint több más, FXML objektumot, melyek valamilyen formában módosításra kerülnek a program futása során. 
+Az osztály magában foglal a \CodeName{GameEngine} osztályból egy példányt, az aktuálisan kiválasztott területekhez kapcsolódó változókat, a gép választható területeire vonatkozó listát, illetve az aktuálisan kiválasztott terület szomszédossági listáit a szövetségesekre, valamint az ellenfelekre vonatkozóan.
+Az FXML dokumentumban megfogalmazott \CodeName{ArrayList} objektumot a térképen lévő köröket tartalmazó \CodeName{StackPane} elemekhez kapcsolódóan, valamint több más, FXML objektumot, melyek valamilyen formában módosításra kerülnek a program futása során. 
 
-Ezeken kívül tartalmaz még a Strava bejelentkezéséért felelős Controller osztályából és a WriteAndReadJSON osztályból egy példányt, továbbá az új játékra és a mentésre vonatkozó változókat, de ezeket majd egy későbbi pontban fejtem ki, amikor a két kontroller osztály kapcsolatáról lesz szó. 
+Ezeken kívül tartalmaz még a Strava bejelentkezéséért felelős \CodeName{Controller} osztályából és a \CodeName{WriteAndReadJSON} osztályból egy példányt, továbbá az új játékra és a mentésre vonatkozó változókat, de ezeket majd egy későbbi pontban fejtem ki, amikor a két kontroller osztály kapcsolatáról lesz szó. 
 
-A start() metódusban történik meg a GameEngine példány inicializálása, beállításra kerülnek a StackPane-ekre vonatkozó tulajdonságok, úgy, mint a hozzájuk tartozó megye, a feliratuk, a körük, valamint az eseménykezelők, mely a StackPane-ekre történő egérkattintásra hívódik meg. Itt zajlik még a javafx.scene.control csomagja által biztosított Tooltip objektum beállítása minden egyes StackPane-re, mely arra szolgál, hogy a kurzort fölé húzva megjelenítsen az egérmutató mellett egy szöveget, ami ebben az esetben a megyék teljes nevei, melyek a GameEngine osztály egyik függvényéből kerülnek kinyerésre id alapján. Ezután ebben a metódusban a GUI frissítése is megtörténik, illetve a felületen megjelenő különböző Label objektumok értékeinek beállítása is. 
+A \CodeName{start} metódusban történik meg a \CodeName{GameEngine} példány inicializálása, beállításra kerülnek a \CodeName{StackPane}-ekre vonatkozó tulajdonságok, úgy, mint a hozzájuk tartozó megye, a feliratuk, a körük, valamint az eseménykezelők, mely a \CodeName{StackPane}-ekre történő egérkattintásra hívódik meg.
+Itt zajlik még a \CodeName{javafx.scene.control} csomagja által biztosított \CodeName{Tooltip} objektum beállítása minden egyes \CodeName{StackPane}-re, mely arra szolgál, hogy a kurzort fölé húzva megjelenítsen az egérmutató mellett egy szöveget, ami ebben az esetben a megyék teljes nevei, melyek a \CodeName{GameEngine} osztály egyik függvényéből kerülnek kinyerésre id alapján.
+Ezután ebben a metódusban a GUI frissítése is megtörténik, illetve a felületen megjelenő különböző \CodeName{Label} objektumok értékeinek beállítása is. 
 
-A GUI frissítéséért felelős függvény az alapértelmezettre állítja a Label-ek értékeit, emellett a köröket is beállítja egy másik metódusban meghatározott alap színükre, amely a megyék tulajdonosai szerint állítja be a színeket. A StackPane-ekre beállított eseménykezelő az azokra való egérkattintások hatására lép működésbe. Elsősorban azt ellenőrzi, hogy a játékos körében történt-e a kattintás. Ha nem, akkor nem történik semmi, ha pedig igen, akkor switch-case ágak segítségével ellenőrzi a GameEngine osztálytól lekért aktuális fázist, és ettől függően más-más működés lép életbe a StackPane-ekre kattintva. 
+A GUI frissítéséért felelős függvény az alapértelmezettre állítja a \CodeName{Label}-ek értékeit, emellett a köröket is beállítja egy másik metódusban meghatározott alap színükre, amely a megyék tulajdonosai szerint állítja be a színeket. A \CodeName{StackPane}-ekre beállított eseménykezelő az azokra való egérkattintások hatására lép működésbe.
+Elsősorban azt ellenőrzi, hogy a játékos körében történt-e a kattintás.
+Ha nem, akkor nem történik semmi, ha pedig igen, akkor \CodeName{switch-case} ágak segítségével ellenőrzi a \CodeName{GameEngine} osztálytól lekért aktuális fázist, és ettől függően más-más működés lép életbe a \CodeName{StackPane}-ekre kattintva. 
 
-Ha a REINFORCE fázisban történt a kattintás, ellenőrzésre kerül, hogy a játékosnak vannak-e elérhető katonái a GameEngine osztályban, melyeket elhelyezhet ebben a fázisban a saját területein. Ha igen, akkor ezek száma csökken 1-el, és ez hozzáadásra kerül az adott StackPane-hez tartozó Country objektum katonák számát tároló változójának értékéhez. Amint a lehelyezhető katonák száma eléri a nullát, vagy a fázis lezáró gombra kattintás történik, a REINFORCE fázis véget ér, és SELECT\_REGION fázisba lép a program, majd az elérhető katonák száma megváltoztatásra kerül olyan értékre, mely a későbbiekben a gép számára lesz felhasználható. 
+Ha a \CodeName{REINFORCE} fázisban történt a kattintás, ellenőrzésre kerül, hogy a játékosnak vannak-e elérhető katonái a \CodeName{GameEngine} osztályban, melyeket elhelyezhet ebben a fázisban a saját területein.
+Ha igen, akkor ezek száma csökken 1-el, és ez hozzáadásra kerül az adott \CodeName{StackPane}-hez tartozó \CodeName{Country} objektum katonák számát tároló változójának értékéhez.
+Amint a lehelyezhető katonák száma eléri a nullát, vagy a fázis lezáró gombra kattintás történik, a \CodeName{REINFORCE} fázis véget ér, és \CodeName{SELECT\_REGION} fázisba lép a program, majd az elérhető katonák száma megváltoztatásra kerül olyan értékre, mely a későbbiekben a gép számára lesz felhasználható. 
 
-A SELECT\_REGION állapotban bekövetkező kattintás hatására egy olyan metódus hívódik meg, ami ellenőrzi, hogy megfelelő, vagyis saját megyére történt-e a kattintás. Amennyiben igen, tárolásra kerül a kijelölt terület id-je, és a jelenlegi fázistól függően a választott terület által megtámadható területek listájához hozzáadásra kerülnek az ehhez elérhető megyék egyedi azonosítói, mely a GameEngine osztály erre vonatkozó függvényével kerül ellenőrzésre. 
+A \CodeName{SELECT\_REGION} állapotban bekövetkező kattintás hatására egy olyan metódus hívódik meg, ami ellenőrzi, hogy megfelelő, vagyis saját megyére történt-e a kattintás.
+Amennyiben igen, tárolásra kerül a kijelölt terület id-je, és a jelenlegi fázistól függően a választott terület által megtámadható területek listájához hozzáadásra kerülnek az ehhez elérhető megyék egyedi azonosítói, mely a \CodeName{GameEngine} osztály erre vonatkozó függvényével kerül ellenőrzésre. 
 
-Ennek vizuális szemléltetésére egy olyan metódus meghívására kerül sor, mely a körök színeit, átlátszóságát, valamint a rajtuk elhelyezett javafx.scene.effect csomag által biztosított Effect-et módosítja. Amennyiben a kiválasztott területről lehetséges a támadás, vagyis több, mint 1 katona van rajta, illetve SELECT\_REGION vagy SELECT\_ENEMY állapotban van a játék, a támadható szomszédok köreinek színe pirosra állítódik és Lighting Effect kerül rájuk, az összes többi átlátszósága felére csökken, a kiválasztott körét kivéve. 
+Ennek vizuális szemléltetésére egy olyan metódus meghívására kerül sor, mely a körök színeit, átlátszóságát, valamint a rajtuk elhelyezett \CodeName{javafx.scene.effect} csomag által biztosított \CodeName{Effect}-et módosítja.
+Amennyiben a kiválasztott területről lehetséges a támadás, vagyis több, mint 1 katona van rajta, illetve \CodeName{SELECT\_REGION} vagy \CodeName{SELECT\_ENEMY} állapotban van a játék, a támadható szomszédok köreinek színe pirosra állítódik és \CodeName{Lighting Effect} kerül rájuk, az összes többi átlátszósága felére csökken, a kiválasztott körét kivéve. 
 
-Ha nem megfelelő StackPane-re történt a kattintás, akkor a játék marad SELECT\_REGION fázisban. Helyes terület kiválasztása után a SELECT\_ENEMY fázisra váltás következik. Ebben az állapotban történő megyékre kattintáskor aktuális fázistól függően ellenőrzésre kerül, hogy a kiválasztott terület jelen esetben támadható-e a korábban kijelölt területről, vagy sem. Amennyiben nem, úgy visszaáll a játékfázis SELECT\_REGION állapotba és frissítésre kerül a GUI a fázishoz tartozó alap állapotba. Ha pedig igen, úgy beállításra kerül a többi, támadható szomszéd átlátszósága világosabbra, csak a kijelölt ellenfél, valamint a korábban kiválasztott terület körének színe marad átlátszatlan, a jobb átláthatóság kedvéért, valamint a felületen megjelenítésre kerül egy Pane a támadásra vonatkozóan. Ez három gombot tartalmaz. 
+Ha nem megfelelő \CodeName{StackPane}-re történt a kattintás, akkor a játék marad \CodeName{SELECT\_REGION} fázisban.
+Helyes terület kiválasztása után a \CodeName{SELECT\_ENEMY} fázisra váltás következik.
+Ebben az állapotban történő megyékre kattintáskor aktuális fázistól függően ellenőrzésre kerül, hogy a kiválasztott terület jelen esetben támadható-e a korábban kijelölt területről, vagy sem.
+Amennyiben nem, úgy visszaáll a játékfázis \CodeName{SELECT\_REGION} állapotba és frissítésre kerül a GUI a fázishoz tartozó alap állapotba.
+Ha pedig igen, úgy beállításra kerül a többi, támadható szomszéd átlátszósága világosabbra, csak a kijelölt ellenfél, valamint a korábban kiválasztott terület körének színe marad átlátszatlan, a jobb átláthatóság kedvéért, valamint a felületen megjelenítésre kerül egy \CodeName{Pane} a támadásra vonatkozóan.
+Ez három gombot tartalmaz. 
 
-Az egyik az ellenfél terület egyszeri megtámadására vonatkozik, a másik ennek addig történő támadására, amíg az lehetséges, a harmadik pedig a támadási szándék visszavonására. Az egyszeri támadás gomb megnyomására ATTACK fázisba lép a játék, és a GameEngine támadásra vonatkozó függvényét meghívva lezajlanak a kockadobások és a vesztes fél elveszít egy katonát. 
+Az egyik az ellenfél terület egyszeri megtámadására vonatkozik, a másik ennek addig történő támadására, amíg az lehetséges, a harmadik pedig a támadási szándék visszavonására.
+Az egyszeri támadás gomb megnyomására \CodeName{ATTACK} fázisba lép a játék, és a \CodeName{GameEngine} támadásra vonatkozó függvényét meghívva lezajlanak a kockadobások és a vesztes fél elveszít egy katonát. 
 
-A csatában résztvevő mindkét megye adatai frissítésre kerülnek, mely megjelenik a felületen is. A játék aktuális köre, a támadó fél neve, a megye neve, amelyről a támadás történt, az ehhez tartozó legnagyobb kockadobás, valamint a védő terület neve, illetve a hozzá tartozó legnagyobb dobás hozzáadásra kerül egy kockadobási listára, mely a játékban történő eddigi összes támadás ezen adatait tárolja. Ez a lista megjelenik a felületen egy gomb megnyomásának hatására, mely a felhasználó és a gép általi dobásokat is tartalmazza. 
+A csatában résztvevő mindkét megye adatai frissítésre kerülnek, mely megjelenik a felületen is.
+A játék aktuális köre, a támadó fél neve, a megye neve, amelyről a támadás történt, az ehhez tartozó legnagyobb kockadobás, valamint a védő terület neve, illetve a hozzá tartozó legnagyobb dobás hozzáadásra kerül egy kockadobási listára, mely a játékban történő eddigi összes támadás ezen adatait tárolja.
+Ez a lista megjelenik a felületen egy gomb megnyomásának hatására, mely a felhasználó és a gép általi dobásokat is tartalmazza. 
 
-Ha a támadás során az ellenfélnek már nem marad katonája, az elfoglalásra kerül a GameEngine osztály erre vonatkozó metódusának meghívásával. Ha a játékos támadó területén már csak egy katona maradt, akkor a támadás abbamarad. A játék állapota mindkét eset után SELECT\_REGION-ra változik, a felület frissítésre kerül a fázisnak megfelelően, a körök az alapértelmezett színükre változnak az új adatokkal. A gombnyomás hatására ellenőrzésre kerül az is, hogy van-e a játéknak nyertese. 
+Ha a támadás során az ellenfélnek már nem marad katonája, az elfoglalásra kerül a \CodeName{GameEngine} osztály erre vonatkozó metódusának meghívásával.
+Ha a játékos támadó területén már csak egy katona maradt, akkor a támadás abbamarad.
+A játék állapota mindkét eset után \CodeName{SELECT\_REGION}-ra változik, a felület frissítésre kerül a fázisnak megfelelően, a körök az alapértelmezett színükre változnak az új adatokkal.
+A gombnyomás hatására ellenőrzésre kerül az is, hogy van-e a játéknak nyertese. 
 
-A folyamatos támadásra vonatkozó gomb megnyomására addig történik automatikusan támadás, amíg az ellenfél területén van katona, vagy pedig a támadó fél területén egynél több katona található. Ha elfogytak az ellenfél katonái a megtámadott megyén, akkor az elfoglalásra kerül és ismét SELECT\_REGION fázisba kerül a játék, a GUI frissül. Itt is ellenőrzésre kerül, hogy nyert-e közben valamelyik fél. 
+A folyamatos támadásra vonatkozó gomb megnyomására addig történik automatikusan támadás, amíg az ellenfél területén van katona, vagy pedig a támadó fél területén egynél több katona található.
+Ha elfogytak az ellenfél katonái a megtámadott megyén, akkor az elfoglalásra kerül és ismét \CodeName{SELECT\_REGION} fázisba kerül a játék, a GUI frissül.
+Itt is ellenőrzésre kerül, hogy nyert-e közben valamelyik fél. 
 
 A harmadik gomb megnyomása csak a kiválasztott ellenfél megye támadási szándékának visszavonására vonatkozik, megnyomására alaphelyzetbe áll a felület és ismét egy saját terület kiválasztására kerül sor. 
 
-A StackPane-ekre vonatkozó eseménykezelőben még a MOVE\_SELECT\_FIRST és a MOVE\_SELECT\_SECOND fázisokra történik még ellenőrzés. Az előbbi állapotba a fázis lezáró gomb megnyomásának hatására van lehetőség átlépni. ATTACK, SELECT\_REGION, SELECT\_ENEMY fázisokban történő megnyomásakor MOVE\_SELECT\_FIRST állapot lesz az aktuális. 
+A \CodeName{StackPane}-ekre vonatkozó eseménykezelőben még a \CodeName{MOVE\_SELECT\_FIRST} és a \CodeName{MOVE\_SELECT\_SECOND} fázisokra történik még ellenőrzés.
+Az előbbi állapotba a fázis lezáró gomb megnyomásának hatására van lehetőség átlépni.
+\CodeName{ATTACK}, \CodeName{SELECT\_REGION}, \CodeName{SELECT\_ENEMY} fázisokban történő megnyomásakor \CodeName{MOVE\_SELECT\_FIRST} állapot lesz az aktuális. 
 
-Ez a játékos egy területéről, egy másik, szomszédos, saját területére való katonák átcsoportosításának kezdetét jelenti. Itt kell kiválasztani, hogy mely területről szeretnénk mozgatni. Ugyan azt a metódust használja, mint a korábban kifejtett saját terület választásért felelős case ág, de a jelenlegi fázisnak megfelelően nem a szomszédos ellenfelek listáját tölti fel, hanem a szomszédos szövetségesekét, illetve nem pirosra színezi ezeket a köröket, hanem zöldre, de ezeken kívül ugyan úgy működik. 
+Ez a játékos egy területéről, egy másik, szomszédos, saját területére való katonák átcsoportosításának kezdetét jelenti.
+Itt kell kiválasztani, hogy mely területről szeretnénk mozgatni.
+Ugyan azt a metódust használja, mint a korábban kifejtett saját terület választásért felelős \CodeName{case} ág, de a jelenlegi fázisnak megfelelően nem a szomszédos ellenfelek listáját tölti fel, hanem a szomszédos szövetségesekét, illetve nem pirosra színezi ezeket a köröket, hanem zöldre, de ezeken kívül ugyan úgy működik. 
 
-Megfelelő terület kiválasztására MOVE\_SELECT\_SECOND fázisba lép a játék, mely alatt StackPane-re történő kattintás során szintén azt a metódust hívja meg, mint amit a SELECT\_ENEMY ág, de a mozgatással kapcsolatos ellenőrzések történnek rajta. Ha olyan terület került kijelölésre, melyre lehetséges az átcsoportosítás, akkor megjelenik egy Pane, melyen ki lehet választani az átcsoportosítandó katonák számát. A JavaFX Slider elemét használtam ennek az adatnak a bevitelére. Átcsoportosítás csak olyan területről lehetséges, amelyen több, mint egy katona van, csak ilyenkor jelenik meg a korábban említett ehhez kapcsolódó Pane. A területen lévő katonák közül egyet mindenképpen ott kell hagyni, ezért a Slider-en kiválasztható maximális érték az adott megyén lévő katonák számánál egyel kevesebb, a minimálisan választható pedig egy. 
+Megfelelő terület kiválasztására \CodeName{MOVE\_SELECT\_SECOND} fázisba lép a játék, mely alatt \CodeName{StackPane}-re történő kattintás során szintén azt a metódust hívja meg, mint amit a \CodeName{SELECT\_ENEMY} ág, de a mozgatással kapcsolatos ellenőrzések történnek rajta.
+Ha olyan terület került kijelölésre, melyre lehetséges az átcsoportosítás, akkor megjelenik egy \CodeName{Pane}, melyen ki lehet választani az átcsoportosítandó katonák számát.
+A JavaFX \CodeName{Slider} elemét használtam ennek az adatnak a bevitelére.
+Átcsoportosítás csak olyan területről lehetséges, amelyen több, mint egy katona van, csak ilyenkor jelenik meg a korábban említett ehhez kapcsolódó \CodeName{Pane}.
+A területen lévő katonák közül egyet mindenképpen ott kell hagyni, ezért a \CodeName{Slider}-en kiválasztható maximális érték az adott megyén lévő katonák számánál egyel kevesebb, a minimálisan választható pedig egy. 
 
-A Slider-re beállítottam egy Listener-t, ami annak aktuális értékének változását figyeli, és ez az érték mindig frissen jelenik meg a Slider alatt elhelyezett Label-en. Az említett Pane tartalmaz egy átcsoportosítás megerősítésére vonatkozó és egy visszalépésre gombot. Előbbi megnyomásának hatására az elsőnek kijelölt megye katona számából levonásra kerül a Slider-en kiválasztott mennyiségű katona, a másodiknak kijelölt terület katona mennyiségéhez pedig ez hozzáadódik, a GUI frissítésre kerül, és elkezdődik a gép köre. A visszalépésre vonatkozó gomb megnyomására a fázis ismét MOVE\_SELECT\_FIRST lesz, és az adott fázishoz tartozóan alaphelyzetbe áll a felület. A fázis lezáró gomb megnyomásának hatására átugorható az átcsoportosítás és megkezdődik a gép köre. A játékos körében mindegyik fázisban, ha a térképre történik kattintás a StackPane-eken kívül, akkor a kör kijelölések visszavonásra kerülnek, és a megfelelő fázisba lép a játék. 
+A \CodeName{Slider}-re beállítottam egy \CodeName{Listener}-t, ami annak aktuális értékének változását figyeli, és ez az érték mindig frissen jelenik meg a \CodeName{Slider} alatt elhelyezett \CodeName{Label}-en. Az említett \CodeName{Pane} tartalmaz egy átcsoportosítás megerősítésére vonatkozó és egy visszalépésre gombot.
+Előbbi megnyomásának hatására az elsőnek kijelölt megye katona számából levonásra kerül a \CodeName{Slider}-en kiválasztott mennyiségű katona, a másodiknak kijelölt terület katona mennyiségéhez pedig ez hozzáadódik, a GUI frissítésre kerül, és elkezdődik a gép köre.
+A visszalépésre vonatkozó gomb megnyomására a fázis ismét \CodeName{MOVE\_SELECT\_FIRST} lesz, és az adott fázishoz tartozóan alaphelyzetbe áll a felület.
+A fázis lezáró gomb megnyomásának hatására átugorható az átcsoportosítás és megkezdődik a gép köre.
+A játékos körében mindegyik fázisban, ha a térképre történik kattintás a \CodeName{StackPane}-eken kívül, akkor a kör kijelölések visszavonásra kerülnek, és a megfelelő fázisba lép a játék. 
 
-Annak érdekében, hogy láthatóak legyenek a gép lépései, egy új szálat hoztam létre a gép körére vonatkozó esemény metódusán belül, melynek végrehajtása a program bizonyos pontjain szüneteltetésre kerül a java.lang.Thread csomagja által nyújtott Thread.sleep() metódus segítségével, ezzel hasonló hatást elérve, mintha a gép is úgy választaná ki a megyét, mint egy felhasználó. Az új szál létrehozása miatt azokat a programrészeket, melyek a szálon belül módosításokat végeznek a GUI-n, JavaFX-ben a Platform.runLater() metódusba kell beleírni, hogy megfelelően működjön a program, és helyesen megjelenítse a felületen történő változásokat. 
+Annak érdekében, hogy láthatóak legyenek a gép lépései, egy új szálat hoztam létre a gép körére vonatkozó esemény metódusán belül, melynek végrehajtása a program bizonyos pontjain szüneteltetésre kerül a \CodeName{java.lang.Thread} csomagja által nyújtott \CodeName{Thread.sleep()} metódus segítségével, ezzel hasonló hatást elérve, mintha a gép is úgy választaná ki a megyét, mint egy felhasználó.
+Az új szál létrehozása miatt azokat a programrészeket, melyek a szálon belül módosításokat végeznek a GUI-n, JavaFX-ben a \CodeName{Platform.runLater()} metódusba kell beleírni, hogy megfelelően működjön a program, és helyesen megjelenítse a felületen történő változásokat. 
 
-Hasonlóképpen, mint a játékos körének állapotainál, ebben az esetben is a GameEngine osztály játékfázisaira vonatkozó Enum objektumai kerülnek vizsgálatra switch-case ágakkal. Először beállításra kerül, hogy bizonyos gombnyomási funkciók ne váljanak elérhetővé a felhasználó számára. Ezután a REINFORCE fázisban a gép által birtokolt megyék id-je egy listába kerül eltárolásra, melyből véletlenszerűen kiválasztásra kerül egy, amire a felhasználható katonák kiosztásra kerülnek egyesével. Ha ez megtörtént, létrejön egy olyan lista, melyre azok a gép által birtokolt területek kerülnek hozzáadásra, amelyekről támadni is tud. Ezek közül véletlen számú területtel támad a körének támadási szakaszában. Az állapot SELECT\_REGION-re kerül beállításra. Ezen belül egy területének kiválasztásához egy listára kerül minden olyan StackPane, mely a gép azon területeit jelöli, amin elegendő katona van a támadáshoz, illetve van neki olyan szomszédja, melyet meg tud támadni. Ez a lista minden alkalommal kiürül, mielőtt ilyen területek gyűjtésére kerülne sor, mert a játék további állapotaiban változás történik a területekre vonatkozóan. Ha ez a lista üres marad, akkor a gép nem tud támadni, ellenőrzésre kerül, hogy nyert-e valaki, és a játék állapota MOVE\_SELECT\_FIRST-re változik. Ha nem maradt üres a lista, akkor ezek közül a Math.random() függvény segítségével véletlenszerűen választ egyet, melyet átszínez, majd a játék a SELECT\_ENEMY fázisba kerül. 
+Hasonlóképpen, mint a játékos körének állapotainál, ebben az esetben is a \CodeName{GameEngine} osztály játékfázisaira vonatkozó \CodeName{Enum} objektumai kerülnek vizsgálatra \CodeName{switch-case} ágakkal.
+Először beállításra kerül, hogy bizonyos gombnyomási funkciók ne váljanak elérhetővé a felhasználó számára.
+Ezután a \CodeName{REINFORCE} fázisban a gép által birtokolt megyék id-je egy listába kerül eltárolásra, melyből véletlenszerűen kiválasztásra kerül egy, amire a felhasználható katonák kiosztásra kerülnek egyesével.
+Ha ez megtörtént, létrejön egy olyan lista, melyre azok a gép által birtokolt területek kerülnek hozzáadásra, amelyekről támadni is tud.
+Ezek közül véletlen számú területtel támad a körének támadási szakaszában. Az állapot \CodeName{SELECT\_REGION}-re kerül beállításra.
+Ezen belül egy területének kiválasztásához egy listára kerül minden olyan \CodeName{StackPane}, mely a gép azon területeit jelöli, amin elegendő katona van a támadáshoz, illetve van neki olyan szomszédja, melyet meg tud támadni.
+Ez a lista minden alkalommal kiürül, mielőtt ilyen területek gyűjtésére kerülne sor, mert a játék további állapotaiban változás történik a területekre vonatkozóan.
+Ha ez a lista üres marad, akkor a gép nem tud támadni, ellenőrzésre kerül, hogy nyert-e valaki, és a játék állapota \CodeName{MOVE\_SELECT\_FIRST}-re változik. Ha nem maradt üres a lista, akkor ezek közül a \CodeName{Math.random()} függvény segítségével véletlenszerűen választ egyet, melyet átszínez, majd a játék a \CodeName{SELECT\_ENEMY} fázisba kerül. 
 
-Itt ugyanaz a metódus kerül meghívásra, mint ennél az állapotnál a felhasználó esetében, de mivel paraméterben jelölve van, hogy melyik fél hívja meg, így ez alapján, ha a gép által kerül meghívásra, feltöltésre kerül egy lista, mely tartalmazza a gép által választott terület támadható szomszédjait. Ezek közül kiválasztásra kerül egy terület, mely a felhasználó ellenfélválasztásához hasonló módon átszíneződik, majd a program átlép a támadási szakaszba. Addig történnek a gép támadásai, amíg lehetősége van rá. Ez annyiszor játszódik így le, amennyi az erősítés végén generált random szám. Közben ellenőrzés történik arra, hogy van-e a játéknak nyertese. 
+Itt ugyanaz a metódus kerül meghívásra, mint ennél az állapotnál a felhasználó esetében, de mivel paraméterben jelölve van, hogy melyik fél hívja meg, így ez alapján, ha a gép által kerül meghívásra, feltöltésre kerül egy lista, mely tartalmazza a gép által választott terület támadható szomszédjait.
+Ezek közül kiválasztásra kerül egy terület, mely a felhasználó ellenfélválasztásához hasonló módon átszíneződik, majd a program átlép a támadási szakaszba.
+Addig történnek a gép támadásai, amíg lehetősége van rá.
+Ez annyiszor játszódik így le, amennyi az erősítés végén generált random szám.
+Közben ellenőrzés történik arra, hogy van-e a játéknak nyertese. 
 
-Amint ez lejátszódott, elkezdődik az átcsoportosítási szakasz. Itt kiürítésre kerül a gép olyan köreinek listája, melyről támadást tud indítani, és feltöltődik azon köreivel, ahonnan át tud csoportosítani katonákat. Ezek közül véletlenszerűen kiválasztásra kerül egy megye, melynek köre átszíneződik. Ha nem tud ilyen területet választani, ellenőrzésre kerül, hogy nyert-e valamelyik fél és a játékos köre következik. Amennyiben lehetősége van az átcsoportosításra, úgy a kiválasztott területről véletlen számú katonát visz át egy szomszédos megyére, úgy, hogy minimum egyet hátrahagy. Ezután a játékos következik. Ekkor ismét elérhetővé válnak a korábban letiltott gombok a felhasználó számára és új kör indul. 
+Amint ez lejátszódott, elkezdődik az átcsoportosítási szakasz.
+Itt kiürítésre kerül a gép olyan köreinek listája, melyről támadást tud indítani, és feltöltődik azon köreivel, ahonnan át tud csoportosítani katonákat.
+Ezek közül véletlenszerűen kiválasztásra kerül egy megye, melynek köre átszíneződik.
+Ha nem tud ilyen területet választani, ellenőrzésre kerül, hogy nyert-e valamelyik fél és a játékos köre következik.
+Amennyiben lehetősége van az átcsoportosításra, úgy a kiválasztott területről véletlen számú katonát visz át egy szomszédos megyére, úgy, hogy minimum egyet hátrahagy.
+Ezután a játékos következik.
+Ekkor ismét elérhetővé válnak a korábban letiltott gombok a felhasználó számára és új kör indul. 
 
 \section{A Strava adatok eléréséért felelős és a játék osztályok kapcsolata}
 
-Mivel két kontroller osztály található meg a projektben, biztosítani kell ezek egymással való kommunikációját. Ehhez a játék kontroller osztályában létrehoztam egy metódust, mely beállítja az osztályhoz azt a Controller objektumot, ami a metódus meghívásakor megadásra kerül benne. 
+Mivel két kontroller osztály található meg a projektben, biztosítani kell ezek egymással való kommunikációját.
+Ehhez a játék kontroller osztályában létrehoztam egy metódust, mely beállítja az osztályhoz azt a \CodeName{Controller} objektumot, ami a metódus meghívásakor megadásra kerül benne. 
 
-A Controller osztályban pedig a következőképp állítottam ezt be egy olyan metóduson belül, mely a játék felületének megnyitásáért felel: 
+A \CodeName{Controller} osztályban pedig a következőképp állítottam ezt be egy olyan metóduson belül, mely a játék felületének megnyitásáért felel: 
 
- 
+\begin{lstlisting}[language=Java]
+MapFXMLController mapController = new MapFXMLController();
+FXMLLoader loader = new FXMLLoader(
+  getClass().getClassLoader()
+  .getResource("mapFXML.fxml"));
+Parent root = (Parent) loader.load();
+mapController = loader.<MapFXMLController>getController();
+mapController.setController(this);
+\end{lstlisting}
 
-Lehetőség van az FXML fájl betöltéséért felelős FXMLLoader objektumnak lekérni a kontrollerét, ezen keresztül állítottam be a játék kontroller osztályához a bejelentkezésért és a felhasználó adataiért felelős kontrollert. Ezen kívül ebben a metódusban átadásra kerülnek a játék kontrollerének a betöltendő mentésre, valamint az új játékra vonatkozó adatok, melyet a GameEngine példánya megkap paraméterben és így feltöltésre kerülnek a MapController-ben a Country objektumok. 
+Lehetőség van az FXML fájl betöltéséért felelős \CodeName{FXMLLoader} objektumnak lekérni a kontrollerét, ezen keresztül állítottam be a játék kontroller osztályához a bejelentkezésért és a felhasználó adataiért felelős kontrollert.
+Ezen kívül ebben a metódusban átadásra kerülnek a játék kontrollerének a betöltendő mentésre, valamint az új játékra vonatkozó adatok, melyet a \CodeName{GameEngine} példánya megkap paraméterben és így feltöltésre kerülnek a \CodeName{MapController}-ben a \CodeName{Country} objektumok. 
 
-Ezután ellenőrzésre kerül, hogy érvényes-e még a felhasználóhoz tartozó korábban eltárolt Access Token, ha nem, akkor ez frissül, majd megtörténik a felhasználó aktivitási listájának frissítése és ehhez kapcsolódóan a pontok beállítása attól függően, hogy új játék kezdődött-e, vagy korábbi mentés került betöltésre. A MapController ez alapján megkapja a megfelelő kezdeti értékeket, melyeket az indításkor meg is jelenít a felületen. 
+Ezután ellenőrzésre kerül, hogy érvényes-e még a felhasználóhoz tartozó korábban eltárolt Access Token, ha nem, akkor ez frissül, majd megtörténik a felhasználó aktivitási listájának frissítése és ehhez kapcsolódóan a pontok beállítása attól függően, hogy új játék kezdődött-e, vagy korábbi mentés került betöltésre.
+A \CodeName{MapController} ez alapján megkapja a megfelelő kezdeti értékeket, melyeket az indításkor meg is jelenít a felületen. 
 
-Mivel a felhasználó aktivitási adatai csak a játék erősítési fázisában számítanak, így a MapControllerben a StackPane-ekre vonatkozó eseménykezelőben a REINFORCE ágban hozzáadásra kerültek különböző, pontok beállításáért felelős elágazások, melyek azt vizsgálják, hogy van-e egyáltalán a felhasználónak feltöltött aktivitása a Strava weboldalán, ha igen, akkor csak egy van-e, vagy több, és ezek szerint számolja a felhasználó pontjait, ebből következően pedig az erősítési fázisban lerakható maximális katonák számát állítja. Amint egy katona elhelyezésre került a REINFORCE fázisban, módosításra kerülnek a felhasználó elköltött és elérhető pontjai. Minden 1000 méter megtétele után plusz egy lehelyezhető katona jár az erősítési fázisban. Ha nem történt aktivitás a belépés óta, akkor csak egy katonát tehet le ebben a szakaszban. 
+Mivel a felhasználó aktivitási adatai csak a játék erősítési fázisában számítanak, így a \CodeName{MapControllerben} a \CodeName{StackPane}-ekre vonatkozó eseménykezelőben a \CodeName{REINFORCE} ágban hozzáadásra kerültek különböző, pontok beállításáért felelős elágazások, melyek azt vizsgálják, hogy van-e egyáltalán a felhasználónak feltöltött aktivitása a Strava weboldalán, ha igen, akkor csak egy van-e, vagy több, és ezek szerint számolja a felhasználó pontjait, ebből következően pedig az erősítési fázisban lerakható maximális katonák számát állítja.
+Amint egy katona elhelyezésre került a \CodeName{REINFORCE} fázisban, módosításra kerülnek a felhasználó elköltött és elérhető pontjai.
+Minden 1000 méter megtétele után plusz egy lehelyezhető katona jár az erősítési fázisban.
+Ha nem történt aktivitás a belépés óta, akkor csak egy katonát tehet le ebben a szakaszban. 
 
-A játék felületén található egy frissítés gomb, ami a játékos körében bármikor elérhető, ez frissíti az Access Token-t, ha az lejárt, és ha történt aktivitás, akkor kiszámolja a megfelelő pontszámot, ennek alapján beállítja a játékos számára elérhető katonák számát és a megfelelő értékek megjelennek a GUI-n. A JSON fájlba írásért és az ezekből való olvasásért a WriteAndReadJSON osztályban található függvények felelnek. 
+A játék felületén található egy frissítés gomb, ami a játékos körében bármikor elérhető, ez frissíti az Access Token-t, ha az lejárt, és ha történt aktivitás, akkor kiszámolja a megfelelő pontszámot, ennek alapján beállítja a játékos számára elérhető katonák számát és a megfelelő értékek megjelennek a GUI-n.
+A JSON fájlba írásért és az ezekből való olvasásért a \CodeName{WriteAndReadJSON} osztályban található függvények felelnek. 
 
-A fájlba írás során öt JSONArray-be történik az adatok kiírása egy JSONObject-en belül. Az első JSONArray-ben a Country objektumokra vonatkozó adatok kerülnek tárolásra, úgy, mint az id, a birtokos és a megyén található katonák száma. A másodikban a játékmenet aktuális helyzetére vonatkozó információk vannak tárolva, vagyis hogy hányadik kör van éppen, melyik fázis, mennyi a letehető katonák száma, melyik játékos köre zajlik épp. A harmadik JSONArray a felhasználóra vonatkozó adatokat tartalmazza, melyekből a User objektum értékei töltődnek fel. A játékos neve, id-je, utolsó aktivitásának az id-je, az Access és Refresh Token-je, az Access Token lejárati ideje, az eddig megtett összes útja, az elköltött és felhasználható pontjai, a játékba való első belépésekor lévő utolsó aktivitásának id-je tartozik ide. A negyedik JSONArray-en a Strava app adatai találhatók meg, vagyis a clientId és a clientSecret. Tárolásra kerül még a játékban történő eddigi dobásokra vonatkozó lista is. 
+A fájlba írás során öt \CodeName{JSONArray}-be történik az adatok kiírása egy \CodeName{JSONObject}-en belül. Az első \CodeName{JSONArray}-ben a \CodeName{Country} objektumokra vonatkozó adatok kerülnek tárolásra, úgy, mint az id, a birtokos és a megyén található katonák száma.
+A másodikban a játékmenet aktuális helyzetére vonatkozó információk vannak tárolva, vagyis hogy hányadik kör van éppen, melyik fázis, mennyi a letehető katonák száma, melyik játékos köre zajlik épp.
+A harmadik \CodeName{JSONArray} a felhasználóra vonatkozó adatokat tartalmazza, melyekből a \CodeName{User} objektum értékei töltődnek fel. Ezek a következők:
 
-A játék különböző pontjain történik automatikus mentés, a gép köre után, és a felhasználó fázisainak elején. A felületen megjelenő kilépés gomb megnyomásának hatására is történik mentés. Egy felhasználó csak egy mentéssel rendelkezik, a már létező mentés törlésre kerül új mentés hatására. A mentett fájl neve tartalmazza a felhasználó id-jét. 
+\begin{itemize}
+\item név
+\item id
+\item utolsó aktivitás id-je
+\item az Access és a Refresh Token
+\item az Access Token lejárati ideje
+\item az eddig megtett összes út
+\item az elköltött és felhasználható pontok
+\item a játékba való első belépésekor lévő utolsó aktivitásának id-je
+\end{itemize}
+
+A negyedik \CodeName{JSONArray}-en a Strava app adatai találhatók meg, vagyis a Client Id és a Client Secret.
+Tárolásra kerül még a játékban történő eddigi dobásokra vonatkozó lista is. 
+
+A játék különböző pontjain történik automatikus mentés, a gép köre után, és a felhasználó fázisainak elején.
+A felületen megjelenő kilépés gomb megnyomásának hatására is történik mentés.
+Egy felhasználó csak egy mentéssel rendelkezik, a már létező mentés törlésre kerül új mentés hatására.
+A mentett fájl neve tartalmazza a felhasználó id-jét. 
 
 \section{Kinézet szerkesztése}
 
-A felület kinézetének módosításához a JavaFX Cascading Style Sheets-et használtam. Ez a W3C 2.1-es CSS verzióján alapul. Ez egy stílusleíró nyelv, mely segítségével meghatározhatjuk a felületen megjelenő különböző elemek megjelenését. A JavaFX CSS a CSS olyan kiterjesztéseit tartalmazza, melyek különböző speciális JavaFX szolgáltatásokat is támogatnak. Nem támogatja a CSS „float”, „overflow”, „position” és a „width” elrendezésre vonatkozó tulajdonságait, ezeket a JavaFX kódban kell beállítani. Ezeken kívül, különböző HTML-specifikus elemekhez kapcsolódó beállításokat nem támogatja, mint például a táblák. A JavaFX CSS fájljában a beállítandó tulajdonságok neve elé „-fx-„ írandó. 
+A felület kinézetének módosításához a JavaFX Cascading Style Sheets-et használtam.
+Ez a W3C 2.1-es CSS verzióján alapul. Ez egy stílusleíró nyelv, mely segítségével meghatározhatjuk a felületen megjelenő különböző elemek megjelenését.
+A JavaFX CSS a CSS olyan kiterjesztéseit tartalmazza, melyek különböző speciális JavaFX szolgáltatásokat is támogatnak.
+Nem támogatja a CSS „\CodeName{float}”, „\CodeName{overflow}”, „\CodeName{position}” és a „\CodeName{width}” elrendezésre vonatkozó tulajdonságait, ezeket a JavaFX kódban kell beállítani.
+Ezeken kívül, különböző HTML-specifikus elemekhez kapcsolódó beállításokat nem támogatja, mint például a táblák.
+A JavaFX CSS fájljában a beállítandó tulajdonságok neve elé „\CodeName{-fx-}„ írandó. 
 
-A programhoz egy CSS fájlt szerkesztettem, ez tartalmaz minden szükséges beállítást, melyek meg vannak adva a felületen a különféle, megjelenő elemeknek. Itt szerepelnek a betűkre, gombokra, Label-ekre, Slider-re, a háttérre, a ScrollPane-re és a benne lévő lista megjelenéséhez kapcsolódó információk. Hogy ezek megjelenjenek a GUI-n, az FXML fájlban a megfelelő elemek tulajdonságainak felsorolásában szerepelnie kell a használandó CSS fájl nevének a következő módon: stylesheets="@style.css". 
+A programhoz egy CSS fájlt szerkesztettem, ez tartalmaz minden szükséges beállítást, melyek meg vannak adva a felületen a különféle, megjelenő elemeknek.
+Itt szerepelnek a betűkre, gombokra, \CodeName{Label}-ekre, \CodeName{Slider}-re, a háttérre, a \CodeName{ScrollPane}-re és a benne lévő lista megjelenéséhez kapcsolódó információk.
+Hogy ezek megjelenjenek a GUI-n, az FXML fájlban a megfelelő elemek tulajdonságainak felsorolásában szerepelnie kell a használandó CSS fájl nevének a következő módon:
 
-Ha egy elemre külön, a CSS fájl által tartalmazott .class beállítást szeretnénk megadni, azt jelen esetben például a háttér beállítására vonatkozóan a style.css-ben szereplő .background{}-on belüli tulajdonságokat, azt a styleClass="background" módon kell jelölni az FXML fájlban. CSS fájltól függetlenül is lehetőség van megadni az FXML fájlban JavaFX CSS megjelenítési tulajdonságokat például style="-fx-background-color: \#b38f6b; -fx-border-color: \#5D544C;" módon. 
+\begin{lstlisting}[language=Java]
+stylesheets="@style.css"
+\end{lstlisting}
+
+
+Ha egy elemre külön, a CSS fájl által tartalmazott \CodeName{.class} beállítást szeretnénk megadni, azt jelen esetben például a háttér beállítására vonatkozóan a \CodeName{style.css}-ben szereplő \CodeName{.background{}}-on belüli tulajdonságokat, azt a \CodeName{styleClass="background"} módon kell jelölni az FXML fájlban.
+CSS fájltól függetlenül is lehetőség van megadni az FXML fájlban JavaFX CSS megjelenítési tulajdonságokat, mint például:
+
+\begin{lstlisting}[language=Java]
+style=
+"-fx-background-color: #b38f6b;
+ -fx-border-color: #5D544C;"
+\end{lstlisting}
