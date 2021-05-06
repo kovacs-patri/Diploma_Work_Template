@@ -1,28 +1,141 @@
-Ebben a fejezetben a fejlesztési dokumentációt mutatom be. Először bemutatom, hogy miképpen lehet egy alkalmazást regisztrálni a Strava weboldalán, majd rátérek a szükséges Strava felhasználói adatok elérésének megvalósítására. Ezután részletezem a játék logikájáért felelős osztályokat, illetve a két rész kapcsolatát, végül pedig szót ejtek a kinézet szerkesztéséről is. 
+Ebben a fejezetben a fejlesztési dokumentációt mutatom be.
+Először bemutatom a projekt forrásának könyvtárszerkezetét, felépítését, a főbb fájlokat, könyvtárakat, valamint a build konfigurációt.
+Ezután megmutatom, hogy miképpen lehet egy alkalmazást regisztrálni a Strava weboldalán, majd rátérek  a szükséges Strava felhasználói adatok elérésének megvalósítására.
+Ezt követően részletezem a játék logikájáért felelős osztályokat, illetve a két rész kapcsolatát, végül pedig szót ejtek a kinézet szerkesztéséről is.
+
+\section{A projekt főbb fájljainak részletezése}
+
+
+A projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán látható:
+
+\Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=12cm}
+
+Az \CodeName{App.java} egy futtatható osztály, ami mint a … fejezetben is említettem, ez tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat.
+Metódusai közül a \CodeName{start} egy absztrakt metódus, melyet kötelezően felül kell írni.
+
+
+\begin{verbatim}
+@Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Strava");
+        scene = new Scene(loadFXML("sample"));
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+\end{verbatim}
+ 
+A \CodeName{start} metódusban kell megadni a megjelenítendő \CodeName{Stage}-et, és annak beállításait.
+A \CodeName{Scene} objektum a jelenetgráf összes tartalmazott elemének tárolója, mely a \CodeName{Stage}-n megjelenítendő view-t tartalmazó FXML-t várja az ablakméretre vonatkozó értékekkel együtt.
+Ezt a \CodeName{Stage}-nek beállítva a \CodeName{show} metódussal érhetjük el, hogy megjelenjen rajta a \CodeName{Scene}.
+
+Ez az osztály ezen kívül tartalmaz még egy \CodeName{setRoot} és egy \CodeName{main} metódust, valamint egy \CodeName{loadFXML} függvényt.
+A \CodeName{loadFXML} függvény a megfelelő FXML fájl betöltéséért felel.
+
+\begin{verbatim}
+private Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    } 
+\end{verbatim}
+ 
+Az FXML betöltéséért az \CodeName{FXMLLoader} osztály felel, mely a \CodeName{javafx.fxml} csomagban található.
+Számos konstruktort tartalmaz, melyek segítségével betölthetjük a dokumentumot.
+Egy \CodeName{FXMLLoader} típusú változó inicializálásával megadható, hogy honnan éri el az FXML fájlt.
+A \CodeName{load} metódusa visszaadja \CodeName{Parent} típusként az FXML forrását.
+
+A \CodeName{setRoot} nevű metódus beállítja az adott \CodeName{Scene}-hez a paraméterében megadott FXML-t.
+
+\begin{verbatim}
+
+public void setRoot(String fxml) throws IOException {
+        scene.setRoot(loadFXML(fxml));
+    } 
+A main metódus pedig csak az Application osztály launch() függvényét tartalmazza. 
+        public static void main(String[] args) {
+        launch();
+    }
+\end{verbatim}
+
+A \CodeName{POM.xml} fájl felépítésére a \ref{fig_pom} ábrán található egy minta.
+Tartalmazza a projektre vonatkozó adatokat, mint például verziószám, projekt neve, kódolás. 
+ 
+\Figure {pom}{A POM.XML fájl tartalma}{width=12cm}
+
+ 
+Mint a \ref{pom2} ábrán is látható, az alkalmazás függőséget is tartalmaz.
+Az ábrán csak a JavaFX \CodeName{contols}-ra és az \CodeName{fxml}-re vonatkozóan, melyek elérhetőek a Maven Central Repository-ból. 
+  
+\Figure {pom2}{POM.XML fájl, függőségek}{width=12cm}
+
+Ezalatt a build folyamathoz szükséges plugin-ok beállítása található, melyre egy példa a \ref{build} ábrán látható: 
+
+
+\Figure {build}{POM.XML fájl, build folyamatok}{width=12cm}
+ 
+
+\Figure {fxml}{FXML fájl}{width=12cm}
+ 
+Pont, mint egy XML dokumentumban, itt is minden elem egy nyitó és egy záró tag közé kerül.
+Az FXML fájl XML deklarációval kezdődik.
+Nem kötelező megadni, de ha definiáljuk, akkor csak a fenti sorrend helyes.
+A verzió az adott FXML fájlra vonatkozó XML szabvány verzióját jelöli, az encoding pedig a fájlban használt karakterkészletet.
+Ha nem adjuk meg az XML deklarációt, akkor alapértelmezettként az “\CodeName{1.0}” XML verziót használja és karakterkódolása pedig “\CodeName{UTF-8}” lesz.
+A következő sorokban lévő import utasítások megfelelnek a Java kódban használt importálási utasításoknak.
+Nem csak JavaFX-es importok használhatók az FXML-ben, hanem szimpla Java importok is, mint pl. \CodeName{java.util.ArrayList}.
+Jelen esetben egy \CodeName{VBox}, egy \CodeName{Label} és egy \CodeName{Button} elemet használunk az adott view-n. 
+ 
+Az \CodeName{AnchorPane} egy olyan elem a megjelenített felületen, melyen különféle elemeket lehet elhelyezni.
+Az első sorában láthatjuk a rá vonatkozó tulajdonságokat és hogy milyen névteret használ.
+Az \CodeName{fx:controller} deklarálásával adható meg, hogy a JavaFX alkalmazásban melyik kontroller osztály tartozik hozzá.
+Lejjebb, az általa tartalmazott elemeket a nyitó és záró tagjei között megadott \CodeName{<children></children>} tagek közt sorolhatjuk fel.
+Ezeknek az elemeknek szintén meg lehet adni különböző tulajdonságokat.
+
+A szövegcímkén például ez itt csak a rajta lévő szöveg és az elhelyezkedése, a gombok esetében pedig ezeken kívül látható egy \CodeName{fx:id} és egy \CodeName{onAction} deklaráció, valamint a kinézetükre vonatkozó beállítások.
+Az \CodeName{fx:id} tartalmazza a gomb id-ját, más osztályokból ezen a néven érhetjük el az adott elemet.
+Az \CodeName{onAction} pedig a rá vonatkozó eseménykezelő funkciójának nevét tartalmazza, mely nevét \# jellel kell kezdeni.
+Ezzel a névvel hivatkozhatunk más osztályokból a gomb ezen tulajdonságára.
+Az FXML elemeket, eseménykezelők metódusait \CodeName{@FXML} annotációval kell ellátni a \CodeName{.java} osztályokban, ha ott használni szeretnénk őket.  
+
+
 
 \section{Alkalmazás regisztrálása a Strava weboldalán}
 
-A Strava API egy nyilvánosan elérhető interfész, ami hozzáférést biztosít a Strava adatbázisában tárolt adatok hozzáféréséhez. Ahhoz, hogy használni lehessen a Strava API-t, először az applikációt regisztrálni kell a weboldalon. Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek a \ref{fig_stravaApp} ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
+A Strava API egy nyilvánosan elérhető interfész, ami hozzáférést biztosít a Strava adatbázisában tárolt adatok hozzáféréséhez.
+Ahhoz, hogy használni lehessen a Strava API-t, először az applikációt regisztrálni kell a weboldalon.
+Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek a \ref{fig_stravaApp} ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
 
 \Figure {stravaApp}{Strava alkalmazás adatai}{width=10cm}
 
-A kérések küldéséhez szükség van autentikációra, melyhez a Strava az OAuth2-t használja. Az OAuth elindulása után szükség van a felhasználó bejelentkezésére a Strava weboldalán, hogy engedélyezze az alkalmazás számára a hozzáférést. Ez a \ref{fig_stravaAuth} ábrán látható. 
+A kérések küldéséhez szükség van autentikációra, melyhez a Strava az OAuth2-t használja.
+Az OAuth elindulása után szükség van a felhasználó bejelentkezésére a Strava weboldalán, hogy engedélyezze az alkalmazás számára a hozzáférést.
+Ez a \ref{fig_stravaAuth} ábrán látható. 
 
 \Figure {stravaAuth}{Strava authorizáció megerősítése}{width=10cm}
 
-Miután ez megtörtént, átirányítja a felhasználót egy másik URL címre, mely tartalmaz egy rövid életű kódot, amit felhasználhat az autorizációhoz. Ez a kód, a Client ID-vel és a Client Secret-tel együtt felhasználható egy kérésre, amellyel le lehet kérni a felhasználóra vonatkozó információkat. Az Access Token az azonosított felhasználó adatainak eléréséhez szükséges, 6 óránként megújul. A Refresh Tokenek új Access Tokenek beszerzésére szolgálnak, ha azok lejártak. 
+Miután ez megtörtént, átirányítja a felhasználót egy másik URL címre, mely tartalmaz egy rövid életű kódot, amit felhasználhat az autorizációhoz.
+Ez a kód, a Client ID-vel és a Client Secret-tel együtt felhasználható egy kérésre, amellyel le lehet kérni a felhasználóra vonatkozó információkat.
+Az Access Token az azonosított felhasználó adatainak eléréséhez szükséges, 6 óránként megújul.
+A Refresh Token új Access Token beszerzésére szolgál, ha az lejárt.
 
 \section{Strava adatok elérésének megvalósítása}
 
-A feladat megvalósításához elengedhetetlen az adott Strava felhasználó különféle adatainak elérése, annak a weboldalra feltöltött aktivitásaira vonatkozó információit is beleértve. Ezen adatokhoz többféleképpen is hozzá lehet férni. Lehetséges a Strava publikus API-ján keresztül, vagy akár csak egyszerű HTTP kérésekkel is. 
+A feladat megvalósításához elengedhetetlen az adott Strava felhasználó különféle adatainak elérése, annak a weboldalra feltöltött aktivitásaira vonatkozó információit is beleértve.
+Ezen adatokhoz többféleképpen is hozzá lehet férni.
+Lehetséges a Strava publikus API-ján keresztül, vagy akár csak egyszerű HTTP kérésekkel is. 
 
-A nyilvános API a Swagger Codegen kódgenerátor segítségével generálható le a hozzá tartozó URL címen található JSON fájlból, különböző programozási nyelvekre. Itt látható egy minta parancs az API kódjának generálására: 
+A nyilvános API a Swagger Codegen kódgenerátor segítségével generálható le a hozzá tartozó URL címen található JSON fájlból, különböző programozási nyelvekre.
+Itt látható egy minta parancs az API kódjának generálására: 
 
 \begin{verbatim}
 $ swagger-codegen generate -i https://developers.strava.com/swagger/swagger.json -l java -o generated/java 
 \end{verbatim}
 
-A -i kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generálandó kód. A -l kapcsolóval lehet megjelölni, hogy mely programozási nyelven szeretnénk megkapni az eredményt, a -o beírása után pedig a célkönyvtár elérési útját kell megadni. Hogy mely nyelveket támogatja a Swagger Codegen, azt a swagger-codegen parancs önmagában való futtatásával lehet kilistázni. A fenti parancsot lefuttatva a Strava API-ja java nyelven kerül legenerálásra a generated/java mappába. Mivel az én programomban nem volt szükség összetettebb funkciók használatára a szükséges adatok eléréséhez, így elegendőnek láttam ezeket inkább csak egyszerű HTTP kérésekkel megoldani. A kész projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán látható: 
+A \CodeName{-i} kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generálandó kód.
+A \CodeName{-l} kapcsolóval lehet megjelölni, hogy mely programozási nyelven szeretnénk megkapni az eredményt, a \CodeName{-o} beírása után pedig a célkönyvtár elérési útját kell megadni.
+Hogy mely nyelveket támogatja a Swagger Codegen, azt a \CodeName{swagger-codegen} parancs önmagában való futtatásával lehet kilistázni.
+A fenti parancsot lefuttatva a Strava API-ja java nyelven kerül legenerálásra a \CodeName{generated/java} mappába.
+Mivel az én programomban nem volt szükség összetettebb funkciók használatára a szükséges adatok eléréséhez, így elegendőnek láttam ezeket inkább csak egyszerű HTTP kérésekkel megoldani.
+A kész projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán látható: 
 
 \Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=12cm}
 
@@ -30,28 +143,31 @@ A -i kapcsoló szolgál azon URL cím megadására, amelyen elérhető a generá
 Programomban a felhasználó Strava adataihoz való hozzáféréshez és ezek tárolásához a következő osztályok felelősek: 
 
 \begin{itemize}
-\item Controller 
-\item HttpRequest
-\item StravaLogin 
-\item User
+\item \CodeName{Controller}
+\item \CodeName{HttpRequest}
+\item \CodeName{StravaLogin}
+\item \CodeName{User}
 \end{itemize}
  
 
-Az App nevű futtatható osztály tartalmazza a program indításához szükséges beállításokat, a sample.fxml fájl betöltését is beleértve. A Controller osztály felel a bejelentkezés lebonyolításáért, a kapcsolat frissítéséért, a felhasználó beállításáért, valamint az FXML fájlban lévő komponensekre vonatkozó események irányításáért. A HttpRequest osztály tartalmaz egy HTTP POST kérésért felelős függvényt, mely egy JSON objektummal tér vissza, valamint egy HTTP GET kérésre vonatkozó függvényt, aminek pedig a visszatérési értéke egy JSONArray. A Strava felhasználó adatai eléréséhez szükséges URL címeket, illetve az ezeket kiegészítő clientId és clientSecret kódokat a StravaLogin osztály tartalmazza. Végül pedig az User osztály a bejelentkezett felhasználóra vonatkozó adatokat tárolja, illetve azokkal történő számításokat végez. 
+Az \CodeName{App} nevű futtatható osztály tartalmazza a program indításához szükséges beállításokat, a \CodeName{sample.fxml} fájl betöltését is beleértve.
+A \CodeName{Controller} osztály felel a bejelentkezés lebonyolításáért, a kapcsolat frissítéséért, a felhasználó beállításáért, valamint az FXML fájlban lévő komponensekre vonatkozó események irányításáért.
+A \CodeName{HttpRequest} osztály tartalmaz egy \CodeName{HTTP POST} kérésért felelős függvényt, mely egy JSON objektummal tér vissza, valamint egy \CodeName{HTTP GET} kérésre vonatkozó függvényt, aminek pedig a visszatérési értéke egy \CodeName{JSONArray}.
+A Strava felhasználó adatai eléréséhez szükséges URL címeket, illetve az ezeket kiegészítő Client Id és Client Secret kódokat a \CodeName{StravaLogin} osztály tartalmazza.
+Végül pedig a \CodeName{User} osztály a bejelentkezett felhasználóra vonatkozó adatokat tárolja, illetve azokkal történő számításokat végez. 
 
-Ezen osztályoknak a célja, hogy a programon belül megtörténjen a felhasználó bejelentkezése, az adatainak és az aktivitási listájának elérése, az ezekből származó megtett távolságokkal való számolás, illetve pontok gyűjtése a felhasználó számára. A következőkben leírom ennek a megvalósítását, amit a controller osztály részletesebb ismertetésével kezdek. 
+Ezen osztályoknak a célja, hogy a programon belül megtörténjen a felhasználó bejelentkezése, az adatainak és az aktivitási listájának elérése, az ezekből származó megtett távolságokkal való számolás, illetve pontok gyűjtése a felhasználó számára.
+A következőkben leírom ennek a megvalósítását, amit a \CodeName{Controller} osztály részletesebb ismertetésével kezdek. 
 
-A program felhasználói felületén elhelyeztem egy WebView-t, mely a javafx.scene.web csomagjában található, és webes felület megjelenítésére szolgál. Az authentikációhoz szükséges URL a következő, melyet a WebView-hoz beállított WebEngine megpróbál betölteni: 
+A program felhasználói felületén elhelyeztem egy \CodeName{WebView-}t, mely a \CodeName{javafx.scene.web} csomagjában található, és webes felület megjelenítésére szolgál.
+Az autentikációhoz szükséges URL a következő, melyet a \CodeName{WebView}-hoz beállított \CodeName{WebEngine} megpróbál betölteni: 
 
 \begin{verbatim}
 https://www.strava.com/oauth/authorize?client_id=[CLIENT_ID]&response_type=code&redirect_uri=http://localhost&approval_prompt=force&scope=activity:read_all 
 \end{verbatim}
 
-
-
-
-
-Az URL-ben szereplő [CLIENT\_ID] a Strava weboldalán bejelentkezett felhasználóként létrehozott App client id-jével kiegészítendő. Mivel az authentikációra való engedély megadása csak a Strava oldalára való bejelentkezés után érhető el, így ennek az URL-nek a betöltésére a https://www.strava.com/login címre irányít át, ahol el kell végezni a bejelentkezést. Ezután már betöltődik az authentikációhoz szükséges cím, melyen meg kell adni az engedélyt a folytatáshoz. Amint ez megtörtént, egy olyan URL-re következik az átirányítás, mely tartalmazza a szükséges Tokenek beszerzéséhez szükséges kódot. Ez a cím tartalmazza a localhost/ szövegrészt, így erre beállítottam egy Listener-t, mely az URL változását figyeli. Ha tartalmazza a localhost/ szövegrészt, az azt jelenti, hogy megtörtént az authentikáció. Ebben az esetben meghívódik egy metódus, amely a legutóbb betöltött címből eléri a szükséges kódot, ezt beilleszti az Access és a Refresh Token kéréséhez szükséges URL-be, majd lefut a tokenek beszerzéséért felelős metódus. 
+Az URL-ben szereplő \CodeName{[CLIENT\_ID]} a Strava weboldalán bejelentkezett felhasználóként létrehozott App Client Id-jével kiegészítendő.
+Mivel az autentikációra való engedély megadása csak a Strava oldalára való bejelentkezés után érhető el, így ennek az URL-nek a betöltésére a https://www.strava.com/login címre irányít át, ahol el kell végezni a bejelentkezést. Ezután már betöltődik az authentikációhoz szükséges cím, melyen meg kell adni az engedélyt a folytatáshoz. Amint ez megtörtént, egy olyan URL-re következik az átirányítás, mely tartalmazza a szükséges Tokenek beszerzéséhez szükséges kódot. Ez a cím tartalmazza a localhost/ szövegrészt, így erre beállítottam egy Listener-t, mely az URL változását figyeli. Ha tartalmazza a localhost/ szövegrészt, az azt jelenti, hogy megtörtént az authentikáció. Ebben az esetben meghívódik egy metódus, amely a legutóbb betöltött címből eléri a szükséges kódot, ezt beilleszti az Access és a Refresh Token kéréséhez szükséges URL-be, majd lefut a tokenek beszerzéséért felelős metódus. 
 
 \begin{lstlisting}[language=Java]
 public void webViewLogin() { 
