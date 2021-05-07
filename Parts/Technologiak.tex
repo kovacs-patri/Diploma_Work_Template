@@ -5,7 +5,7 @@ Ezt több technológiahalmaz is támogatja, mint például a C++ és QML StackVi
 Továbbá egy igencsak elterjedt programozási nyelv.
 
 A Java  egy olyan programozási nyelv, mely kikényszeríti az objektumorientált elvek betartását.
-James Gosling vezetésével a Sun Microsystems egyik csoportja, a JavaSoft tervezte, első verzióját 1996-ban adták ki.
+James Gosling vezetésével a Sun Microsystems egyik csoportja, a JavaSoft tervezte, első verzióját 1996-ban adták ki.\cite{java}
 
 
 \subsection*{Tulajdonságai:}
@@ -20,14 +20,14 @@ James Gosling vezetésével a Sun Microsystems egyik csoportja, a JavaSoft terve
 \item több szál párhuzamos futtatását biztosítja
 \end{itemize}
 
-\section{Lehetséges grafikus könyvtárak összehasonlítása}
+\subsection{Lehetséges grafikus könyvtárak összehasonlítása}
 
 A Java egy több évtizedes technológia, ezidő alatt sokat fejlődött, így több választási lehetőség is volt a grafikus rendszer kiválasztásának terén, úgy, mint az AWT, az SWT, a Swing és a JavaFX.
 Ebben az alfejezetben ezeket a lehetséges grafikus rendszereket hasonlítom össze. 
 
-\subsection*{AWT} 
+\subsubsection*{AWT} 
 
-Az AWT egy API, grafikus felhasználói felület készítéséhez Java-ban.
+Az AWT egy API, grafikus felhasználói felület készítéséhez Java-ban. \cite{gui}\cite{awt}
 Komponensei platformfüggőek, vagyis olyan interfészeket tartalmaznak, amelyek kölcsönhatásba lépnek a helyi felhasználói felülettel, így az operációs rendszer kinézetének megfelelően jelennek meg.
 Az AWT grafikus függvényei egytől egyig megfelelnek az operációs rendszer grafikus függvényeinek.
 
@@ -37,9 +37,9 @@ Hátránya lehet, hogy ha ugyanazt az alkalmazást más platformon futtatjuk, ak
 Negatívuma még, hogy hiányoznak belőle a fák és a táblák, illetve nem bővíthető, vagyis nem lehet egy, már meglévő AWT komponenst örökíteni és újra felhasználni.
 
 
-\subsection*{Swing}
+\subsubsection*{Swing}
 
-A Swing egy olyan AWT-re épülő grafikus interfész rendszer, amely megpróbálja pótolni az AWT hiányosságait.
+A Swing egy olyan AWT-re épülő grafikus interfész rendszer, amely megpróbálja pótolni az AWT hiányosságait.\cite{gui}\cite{swing}
 Platformfüggetlen, nem az operációs rendszer grafikus komponenseit használja, hanem saját, rajzolt komponensei vannak.
 Az AWT Window komponensét használja, azon kívül minden más elemét lecseréli.
 
@@ -53,18 +53,18 @@ Hátránya, hogy nagyobb a memóriaigénye, mint az AWT-nek és az SWT-nek.
 A Swing alkalmazások gyakran a teljesítmény romlását okozzák, mivel az összes saját komponensét implementálja, emiatt futási időben nagy számú osztályt tölt be.
 
 
-\subsection*{SWT}
+\subsubsection*{SWT}
 
 Az SWT-t az IBM készítette az Eclipse-hez, mivel a Swing-et nem tartották alkalmasnak hozzá.
 Alternatívaként hozták létre az AWT és a Swing helyett.
-Egyáltalán nem kapcsolódik hozzájuk, nem része a Java API-nak.
+Egyáltalán nem kapcsolódik hozzájuk, nem része a Java API-nak.\cite{gui}
 
 Előnyei, hogy különböző komponens típusok széles skáláját kínálja, gyors válaszidejű, kevés a memóriafelhasználása.
 
 
-\subsection*{JavaFX}
+\subsubsection*{JavaFX}
 
-A JavaFX egy nyílt forráskódú Java alapú keretrendszer, mely alkalmas Rich Internet Application alkalmazások (komplex felhasználói felülettel rendelkező webalkalmazások) fejlesztésére.
+A JavaFX egy nyílt forráskódú Java alapú keretrendszer, mely alkalmas Rich Internet Application alkalmazások (komplex felhasználói felülettel rendelkező webalkalmazások) fejlesztésére.\cite{javafx}\cite{javafx6}
 Az ilyen alkalmazások képesek adatokat elérni az internetről böngésző használata nélkül.
 A Swing leváltására hozták létre.
 Több platformon, különböző eszközökön futtathatók, mint például asztali számítógépeken, mobiltelefonokon, TV-n, stb.
@@ -82,9 +82,9 @@ Az előzőekkel összehasonlítva, nekem ez tűnt a legalkalmasabb egy játék p
 A következő alfejezetben bővebben szót ejtek a JavaFX keretrendszerről.
 
 
-\section{A JavaFX ismertetése}
+\subsection{A JavaFX ismertetése}
 
-\subsection*{Tulajdonságai:}
+\subsubsection*{Tulajdonságai:}
 \begin{itemize}
 \item a Java natív része 
 \item támogatja több szál párhuzamos futtatását, generikus típusok és lambda kifejezések használatát valamint az adatkötést 
@@ -94,9 +94,9 @@ A következő alfejezetben bővebben szót ejtek a JavaFX keretrendszerről.
 \item lehetővé teszi webtartalom beágyazását az alkalmazásba
 \end{itemize}
 
-\subsection*{A JavaFX platform komponensei}
+\subsubsection*{A JavaFX platform komponensei}
 
-Ebben az alfejezetben részletesebben bemutatom a \ref{fig_javafx} 2. ábra alapján, hogy a JavaFX platform milyen komponensekből épül fel. 
+Ebben az alfejezetben részletesebben bemutatom a \ref{fig_javafx} 2. ábra alapján, hogy a JavaFX platform milyen komponensekből épül fel. \cite{javafx}\cite{javafx4}
 
 \Figure {javafx}{JavaFX platform komponensei}{width=15cm}
 
@@ -106,7 +106,7 @@ A jelenetgráf vizuális elemeket tartalmaz, melyeket Node-oknak, más néven cs
 Ezek az elemek képesek kezelni a felhasználói inputokat, lehetnek effektjeik, transzformációik és állapotaik.
 Ilyen vizuális elem lehet például egy gomb vagy egy szövegmező. 
 
-A Prism egy hardveres gyorsítású grafikus pipeline, amely a jelenetgráf rendereléséért felel.
+A Prism egy hardveres gyorsítású grafikus pipeline, amely a jelenetgráf rendereléséért felel.\cite{javafx2}
 
 A Glass Windowing Toolkit ablakozási feladatokért felelős, melyeket a natív operációs rendszertől függően jelenít meg, valamint kezeli az eseménysorokat is.
 JavaFX-ben a fő szálban kerülnek kezelésre az események, ezt a szálat JavaFX Application Thread-nek hívják.
@@ -124,7 +124,7 @@ Továbbá korábban a Google Chrome és az Opera is ezt használta.
 A Quantum Toolkit az előbbiek feletti absztrakciós szint, mely megkönnyíti ezen alacsony szintű komponensek közötti koordinációt.
 
 
-\subsection*{Egy JavaFX alkalmazás életciklusa}
+\subsubsection*{Egy JavaFX alkalmazás életciklusa}
 
 JavaFX alkalmazás futtatásakor a következő két fő szál jön létre: 
 
@@ -142,10 +142,10 @@ Az alkalmazás életciklusa alatt az \CodeName{Application} osztály \CodeName{l
 \item \CodeName{start()}
 \end{itemize}
 
-Az \CodeName{init()} metódus a \CodeName{JavaFX Launcher Thread}-ben hívódik meg, a \CodeName{start()} pedig a \CodeName{JavaFX Application Thread}-ben.
+Az \CodeName{init()} metódus a \CodeName{JavaFX Launcher Thread}-ben hívódik meg, a \CodeName{start()} pedig a \CodeName{JavaFX Application Thread}-ben.\cite{javafx3}
 Amikor az alkalmazás leáll, akkor a \CodeName{stop()} metódus hívódik meg, bezárni pedig a \CodeName{Platform.exit()} metódussal lehet.  
 
-\subsection*{Model-View-Controller (MVC) és a JavaFX}
+\subsubsection*{Model-View-Controller (MVC) és a JavaFX}
 
 A Model-View-Controller, röviden MVC, egy programtervezési minta, amely szétválasztja a megjelenítést (view) az adatoktól (model), melyeket egy vezérlő (controller) kapcsol össze. 
 
@@ -156,11 +156,11 @@ A \ref{fig_mvc} ábrán látható az MVC működése:
 \Figure {mvc}{MVC működése}{width=15cm}
 
 
-\subsection*{Model} 
+\subsubsection*{Model} 
 
 A szoftver állapotát leíró változókat, objektumokat tartalmazza. 
 
-\subsection*{View}
+\subsubsection*{View}
 
 Kétféleképpen építhető fel a felhasználói felület egy JavaFX alkalmazásban: 
 
@@ -172,9 +172,9 @@ Kétféleképpen építhető fel a felhasználói felület egy JavaFX alkalmazá
 Az FXML egy XML alapú, szkriptelhető jelölőnyelv.
 Segítségével a kódtól teljesen függetlenül, külön fájlban készíthető el a felület.
 Létezik az FXML-nek vizuális szerkesztője is, ez pedig a Scene Builder.
-Segítségével gyorsabban és egyszerűbben össze lehet állítani a GUI-t. 
+Segítségével gyorsabban és egyszerűbben össze lehet állítani a GUI-t. \cite{javafx}
 
-\subsection*{Controller}
+\subsubsection*{Controller}
 
 Az FXML fájlban megadható, hogy melyik kontroller osztály tartozik az adott felülethez.
 A kontroller osztály eléri az FXML-ben lévő elemeket és műveleteket végezhet a GUI-n.
@@ -223,9 +223,22 @@ A lefuttatott alkalmazás eredménye pedig az \ref{fig_minta} ábrán látható:
 \Figure {minta}{Minta projekt lefuttatása után}{width=10cm}
 
 
+\section{Maven}
+
+A Maven egy olyan szoftver, mely segítségével automatizálhatók a build folyamatok, illetve projektek menedzselésére is alkalmazható.\cite{maven1}\cite{maven2}
+Használatával a program felépítéséhez szükséges függőségeket nem szükséges manuálisan letölteni, mivel ezt automatikusan megteszi a projekt fordítása előtt egy repositoryból.
+Rengeteg függőség elérhető például a Maven Central Repository-ból, de léteznek más repository-k is és magunk is létrehozhatunk sajátot. 
+
+A Maven alapja a Project Object Model (POM), amely egy XML fájl, melybe meg kell adni minden szükséges információt, ami a program felépítéséhez elengedhetetlen.
+Ez alapján a Maven képes elvégezni a build folyamatot, különböző dokumentációk, riportok generálását, források lefordítását, az alkalmazás összecsomagolását.
+A build folyamat kimenetele az artifact.
+Ez például 3rd party library esetén JAR állomány, web alkalmazás esetén pedig WAR állomány.
+Létre lehet hozni vele még például projekt sablonokat is különböző paraméterek megadásával. 
+
+
 \section{OAuth 2.0}
 
-Az OAuth 2.0 egy olyan keretrendszer, amely bizonyos HTTP szolgáltatásokhoz, felhasználói fiókok adataira vonatkozóan nyújt korlátozott jogosultságot harmadik féltől származó alkalmazások számára. 
+Az OAuth 2.0 egy olyan keretrendszer, amely bizonyos HTTP szolgáltatásokhoz, felhasználói fiókok adataira vonatkozóan nyújt korlátozott jogosultságot harmadik féltől származó alkalmazások számára.\cite{oauth}
 
 \subsection*{Működése} 
 
@@ -248,7 +261,7 @@ A \ref{fig_oauth} ábrán látható az OAuth 2.0 működése:
 
 A JSON (JavaScript Object Notation) egy embereknek is könnyen írható és olvasható, hierarchikus felépítésű adatcsere-formátum.
 Részben a JavaScript nyelven alapul.
-XML alternatívaként használják, leggyakrabban egy webalkalmazás és egy szerver közti adatok átvitelére. 
+XML alternatívaként használják, leggyakrabban egy webalkalmazás és egy szerver közti adatok átvitelére.\cite{json}
 
 Egy példa alapján bemutatom a felépítését. 
 
@@ -277,17 +290,7 @@ Mint látható, egy objektum több név-érték párt is tartalmazhat, ezeket ve
 A szöveges értékeket idézőjelek közé kell írni.
 A példában is látszik, hogy sztringeken kívül értékül adható még szám, logikai igaz vagy hamis, illetve null érték is. 
 
-\section{Maven}
 
-A Maven egy olyan szoftver, mely segítségével automatizálhatók a build folyamatok, illetve projektek menedzselésére is alkalmazható.\cite{maven1}
-Használatával a program felépítéséhez szükséges függőségeket nem szükséges manuálisan letölteni, mivel ezt automatikusan megteszi a projekt fordítása előtt egy repositoryból.
-Rengeteg függőség elérhető például a Maven Central Repository-ból, de léteznek más repository-k is és magunk is létrehozhatunk sajátot. 
-
-A Maven alapja a Project Object Model (POM), amely egy XML fájl, melybe meg kell adni minden szükséges információt, ami a program felépítéséhez elengedhetetlen.
-Ez alapján a Maven képes elvégezni a build folyamatot, különböző dokumentációk, riportok generálását, források lefordítását, az alkalmazás összecsomagolását.
-A build folyamat kimenetele az artifact.
-Ez például 3rd party library esetén JAR állomány, web alkalmazás esetén pedig WAR állomány.
-Létre lehet hozni vele még például projekt sablonokat is különböző paraméterek megadásával. 
 
 \section{Fejlesztést támogató eszközök}
 
@@ -298,7 +301,7 @@ Fejlesztése 1996-ban kezdődött egy egyetemi projekt keretén belül, eleinte 
 Első verziója 1997-ben jelent meg.
 1999-ben a Sun Microsystems felvásárolta a programot és megnyitotta annak forráskódját.
 2010-ben az Oracle felvásárolta a Sun-t, ezáltal a NetBeans is Oracle fejlesztés alá került.
-A NetBeans 8.2-es kiadása után, 2016-ban az Oracle átadta az Apache Software Foundation-nek a program forráskódját, így jelenleg ők fejlesztik tovább a fejlesztői környezetet.
+A NetBeans 8.2-es kiadása után, 2016-ban az Oracle átadta az Apache Software Foundation-nek a program forráskódját, így jelenleg ők fejlesztik tovább a fejlesztői környezetet.\cite{netbeans}\cite{netbeans2}
 
 \subsection{SceneBuilder}
 
@@ -319,4 +322,45 @@ Mindkettő esetben REST API segítségével történik az adatokhoz való hozzá
 Ezeken kívül létezik még sok más olyan forrás, ahonnét aktivitási adatokat lehet elérni, mint például a Garmin Connect, vagy a RunKeeper, viszont ezek közül nem mindegyiknek ingyenes és publikus az API-ja, vagy nem feltétlenül van hozzá Java lib. 
 
 A két lehetséges forrás közül a Strava-t választottam, mivel a platformok között talán ez a legnépszerűbb, és több más fitnesz adatokat tároló adatbázisból lehet rá szinkronizálni aktivitási adatokat.
-Ezen kívül nyílt API-val rendelkezik, és van hozzá Java támogatás is, így ezt ideálisnak tartottam. 
+Ezen kívül nyílt API-val rendelkezik, és van hozzá Java támogatás is, így ezt ideálisnak tartottam.
+
+\subsection{Git és GitHub}
+
+\subsection*{Git} 
+
+A Git egy igen népszerű platformfüggetlen verziókezelő rendszer.
+Célja, hogy fájlok különböző verzióit megőrizze és megossza, hogy visszakövethetőek legyenek a rajtuk történt változtatások, valamint hogy megfelelően kezelje a branch-eket, ezáltal megkönnyítve a programozók munkáját.
+A verziók visszanézhetők, szükség esetén visszatérhetünk egy korábbi változatra.
+A fájlok lokális tárolóban, úgynevezett repository-ban kerülnek tárolásra.
+Fontos fogalom még a Git-ben a branch. Egy branch létrehozásakor az egész projektről másolat készül egy másik könyvtárba.
+Az alapértelmezett branch a master.
+A branch-eken úgynevezett commit-okat készítve jönnek létre különböző verziók a fájlokról, melyek az új változatokat tartalmazzák.
+A branch-ek összefésülhetők. 
+
+A Git egy hash alapú fájlrendszer, egy fájlt csak egyszer tárol, ha több verziót tárolunk, ezek nagyon kevés helyet foglalnak, mivel csak a megváltozott fájlokat tárolja el pluszban.\cite{git}
+Ezen kívül a tárolót egy pack fájlba tömöríti, ami csak annyit tárol tömörített formában, hogy milyen változtatások történtek a verziók között.
+Emiatt gyorsan, és kevés tárhely felhasználásával készíthetőek branch-ek.
+A Git ezt mind a .git könyvtárban tárolja. 
+Lehetőséget nyújt különböző repository-k közötti kódmegosztásra, akár távoli gépen lévő tárolók szinkronizálására is. 
+
+\subsection*{GitHub}
+
+A GitHub nyílt forrású projektek megosztására szolgáló rendszer, a Git-hez hozták létre.
+Tárhelyet biztosít projektek fájljainak, melyek lehetnek privátak és publikusak is.
+Ezen kívül felületet biztosít a Git funkcionalitásaihoz, valamint más szolgáltatásokat is nyújt, mint például a pull request workflow vagy az issue tracking.
+Alapvetően ingyenes, de rendelkezik fizetős szolgáltatásokkal is. Könnyen használható. 
+
+\subsection{\LaTeX}
+
+A \LaTeX egy ingyenes, platformfüggetlen TeX-en alapuló szövegformázó program.
+Segítségével egyszerűen lehet nyomdai minőségben akár műszaki szövegeket is előállítani. 
+
+A TeX betűszedő rendszert Donald Knuth fejlesztette ki.
+Az 1970-es évek környékén kiadta a Számítógép-programozás művészete című könyvének első kiadását, amivel elégedett is volt, de a második kiadásnál egy újabb eljárást használtak a betűszedésre, csakhogy ez nem tetszett neki.
+Eldöntötte, hogy megír egy olyan digitális betűszedő rendszert, ami a számára megfelelő kimenetet adja, így született meg a TeX.\cite{latex}
+
+A \LaTeX a WYSIWYG szövegszerkesztőkkel ellentétben a tartalmat és a megjelenítést külön kezeli.
+Olyan speciális dokumentumok készítésére is alkalmas, mint például matematikai, számítástechnikai, statisztikai cikkek írása, vagy akár kották szedésére is.
+Rengeteg letölthető kiegészítés érhető el hozzá, melyek legnagyobb gyűjtőhelye a CTAN.
+
+Szakdolgozatomat a Texmaker nevű \LaTeX szerkesztővel készítettem.
