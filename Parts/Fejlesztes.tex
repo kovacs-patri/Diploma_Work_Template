@@ -252,7 +252,8 @@ public JSONObject httpPOST(String urlString){
     String response = sb.toString();
     myResponse = new JSONObject(response.toString());   
     } catch (IOException e) {
-      Logger.getLogger(HttpRequest.class.getName()).log(Level.SEVERE, null, e);
+      Logger.getLogger(HttpRequest.class.getName())
+      .log(Level.SEVERE, null, e);
       }
     return myResponse;
     }
@@ -318,7 +319,7 @@ Ha megegyezik a két legnagyobb dobás, abban az esetben a védekező fél nyeri
 A \CodeName{Map} osztály egy \CodeName{HashMap}-et tartalmaz a megyék szomszédosságaira vonatkozóan, melynek feltöltése egy JSON fájlból történik.
 A \CodeName{HashMap} tartalmát visszaadó függvényen kívül még a szomszédosságra vonatkozó függvényeket tartalmaz, úgy, mint annak ellenőrzése, hogy két adott megye szomszédos-e, egy megye szomszédsági listája tartalmazza-e a paraméterben megadott megyét, valamint egy adott megye szomszédsági listájának visszaadására vonatkozó függvényt. 
 
-\subsection{A GameEngine osztály}
+\subsection*{A GameEngine osztály}
 
 A \CodeName{GameEngine} nevű osztály a játékmenetre vonatkozó dolgokat foglalja magában.
 Tartalmazza a megyék kapcsolatait, valamint azok \CodeName{Country} objektumokkal feltöltött listáját, a játékosok listáját, azt, hogy a játékban eddig ki, melyik megyével melyik megyét támadta és mik voltak a dobások, a játék fázisokat, hogy hány katonát kaphatnak a játékosok az adott körben az erősítési fázisban, jelenleg hányadik körben zajlik a játék és a nyertest. 
@@ -330,7 +331,7 @@ A következőkben ezeket fogom részletesebben leírni.
 Az osztály konstruktorában paraméterként vár egy boolean és egy String változót arra vonatkozóan, hogy új játék betöltésére kerül-e sor, vagy nem és ha nem, akkor milyen nevű fájlt töltsön be.
 Feltöltésre kerül a kapcsolati lista.
 A játékos és a gép hozzáadása a játékos listához is itt történik.
-Új játék indítása esetén egy olyan metódus hívódik meg, amely a kapcsolati listán végigmenve létrehozza az ehhez tartozó \CodeName{Country} objektumokat a megfelelő id-vel, 10 és 15 közötti véletlenszerű katonaszámmal, melyet a \CodeName{java.util.concurrent.ThreadLocalRandom} csomag \CodeName{ThreadLocalRandom.current().nextInt()} függvényével számoltam. 
+Új játék indítása esetén egy olyan metódus hívódik meg, amely a kapcsolati listán végigmenve létrehozza az ehhez tartozó \CodeName{Country} objektumokat a megfelelő id-vel, 10 és 15 közötti véletlenszerű katonaszámmal, melyet a \CodeName{java.util.concurrent.ThreadLocalRandom} csomag \CodeName{ThreadLocalRandom.current()\linebreak[4].nextInt()} függvényével számoltam. 
 
 Amennyiben nem új játék indítására kerülne a sor, hanem már létező mentés betöltésére, úgy egy JSON fájlból olvasó metódus kerül lefutásra.
 Ez a konstruktorban megadott String változó nevét kéri paraméterként, ezzel a névvel ellátott fájlt próbálja meg beolvasni.
