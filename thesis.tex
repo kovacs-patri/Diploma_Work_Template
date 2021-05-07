@@ -1,54 +1,55 @@
 \documentclass[12pt,a4paper,twoside,openright]{report}
 
 \usepackage{hegyhati}
+\usepackage{url}
+\usepackage{underscore}
+\usepackage{parskip}
 
 
 \title{ Title }
-\author{ Author Name \\\ \\Supervisor: Máté Hegyháti, PhD}
+\author{ Kovács Patrícia \\\ \\Supervisor: Máté Hegyháti, PhD}
 
+
+\setlength
+\parindent{0pt}
+\renewcommand{\baselinestretch}{1.3}
+\setlength{\parskip}{1em}
+\renewcommand\_{\textunderscore\allowbreak}
 
 \begin{document} 
 
+  \ChapterUnnumbered{Kivonat}{Kivonat}{Kivonat}
   \ChapterUnnumbered{Abstract}{Abstract}{Abstract}
   
-   
+  
    
   % List of... pretty much everything  
     
     \tableofcontents
     \listoffigures 
-    \listoftables
-    \listofalgorithms
 
-  \ChapterUnnumbered{Acknowledgments}{Thanks}{Thanks}
-  \markboth{Achnowledgements}{}
+  \ChapterUnnumbered{Köszönetnyilvánítás}{Köszönetnyilvánítás}{Thanks}
+  \markboth{Köszönetnyilvánítás}{}
     
-  \Chapter{Introduction}{Example}
-
-  \Chapter{Literature review / similar software solutions}{Example}  
-  Do a lot of citation here\cite{Sanmarti2002}.
-
-  \Chapter{Problem definition / requirements \& technologies}{Example}
-
-  \Chapter{The proposed approach / developed software}{Example}
-    \Section{Part of the approach / software}{Example}
-    \Section{Another part of the approach / software}{Example}
-
-  \Chapter{Test results / User manual for the software}{Example}
-
-  \Chapter{Future work}{Example}
-
-  \Chapter{Summary}{Example}
+  \Chapter{Bevezetés}{Bevezetes}
   
-  % Appendix
-    \appendix
-    \Chapter{Environment for comparisons}{Example}
-    \chapter{Nomenclature}
-      \Section{Part of the notation}{Example}
-      \Section{Another part of the notation}{Example}    
+  \Chapter{A program alapjául szolgáló játékok, eszközök bemutatása}{Otlet}
+  
+  \Chapter{Az elkészítendő szoftver specifikációja}{Specifikacio}
+
+  \Chapter{Felhasznált technológiák}{Technologiak}
+
+
+  \Chapter{Fejlesztési dokumentáció}{Fejlesztes}
+
+
+  \Chapter{Eredmény bemutatása}{Eredmeny}
+
+  \Chapter{Összefoglalás és további fejlesztési lehetőségek}{Osszefoglalas}
+  
 
   % References
-  \addcontentsline{toc}{chapter}{References}
+  \addcontentsline{toc}{chapter}{Irodalomjegyzék}
   \bibliography{references}
   \bibliographystyle{plain}
 
