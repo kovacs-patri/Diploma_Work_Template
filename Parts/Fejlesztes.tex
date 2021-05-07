@@ -151,6 +151,7 @@ A kész projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán l�
 Programomban a felhasználó Strava adataihoz való hozzáféréshez és ezek tárolásához a következő osztályok felelősek: 
 
 \begin{itemize}
+\setlength\itemsep{0em}
 \item \CodeName{Controller}
 \item \CodeName{HttpRequest}
 \item \CodeName{StravaLogin}
@@ -266,6 +267,7 @@ A \CodeName{User} osztályban a bejelentkezett felhasználóra vonatkozó inform
 A felhasználóról a következő adatokat tárolom: 
 
 \begin{itemize}
+\setlength\itemsep{0em}
 \item név 
 \item id 
 \item access token 
@@ -285,6 +287,7 @@ Magához a játék megvalósításához öt Java osztályt és egy hozzá tartoz
 A Java osztályok név szerint a következők: 
 
 \begin{itemize}
+\setlength\itemsep{0em}
 \item \CodeName{Country}
 \item \CodeName{CountryDiceRoll}
 \item \CodeName{GameEngine}
@@ -292,7 +295,9 @@ A Java osztályok név szerint a következők:
 \item \CodeName{Map}
 \end{itemize}
 
-A következőkben ezen osztályok tartalmát részletezem. 
+A következőkben ezen osztályok tartalmát részletezem.
+
+\subsection*{A Country és a CountryDiceRoll osztály}
 
 A \CodeName{Country} osztály tartalmazza a megyékre vonatkozó információkat, úgy, mint az id-je, mely egy egyedi azonosító, magában foglalja, hogy hány katona van az adott területen, annak birtokosát, és mivel körökkel jelöltem meg a felületen a megyéket, így a hozzá tartozó, \CodeName{javafx.scene.shape} csomag által nyújtott kört is itt tárolom, valamint az ezen megjelenő szöveget is, mely a területen tartózkodó katonák számát jeleníti meg. 
 
@@ -306,10 +311,14 @@ A kockadobások csökkenő sorrendbe rendezéséért is ennek az osztálynak egy
 A \CodeName{Country} osztály tehát a támadásra vonatkozó metódusában ezt használja annak eldöntésére, hogy egy támadás során melyik fél veszít katonát.
 Egy támadás során vagy az egyik, vagy a másik fél elveszít egy katonát.
 Amelyik fél nagyobbat dob, az nyer, az ellenféltől pedig levonásra kerül egy katona.
-Ha megegyezik a két legnagyobb dobás, abban az esetben a védekező fél nyeri a csatát, vagyis a támadó elveszít egy katonát. 
+Ha megegyezik a két legnagyobb dobás, abban az esetben a védekező fél nyeri a csatát, vagyis a támadó elveszít egy katonát.
+
+\subsection*{A Map osztály}
 
 A \CodeName{Map} osztály egy \CodeName{HashMap}-et tartalmaz a megyék szomszédosságaira vonatkozóan, melynek feltöltése egy JSON fájlból történik.
 A \CodeName{HashMap} tartalmát visszaadó függvényen kívül még a szomszédosságra vonatkozó függvényeket tartalmaz, úgy, mint annak ellenőrzése, hogy két adott megye szomszédos-e, egy megye szomszédsági listája tartalmazza-e a paraméterben megadott megyét, valamint egy adott megye szomszédsági listájának visszaadására vonatkozó függvényt. 
+
+\subsection{A GameEngine osztály}
 
 A \CodeName{GameEngine} nevű osztály a játékmenetre vonatkozó dolgokat foglalja magában.
 Tartalmazza a megyék kapcsolatait, valamint azok \CodeName{Country} objektumokkal feltöltött listáját, a játékosok listáját, azt, hogy a játékban eddig ki, melyik megyével melyik megyét támadta és mik voltak a dobások, a játék fázisokat, hogy hány katonát kaphatnak a játékosok az adott körben az erősítési fázisban, jelenleg hányadik körben zajlik a játék és a nyertest. 
@@ -335,6 +344,7 @@ A játék fázisai \CodeName{Enum}-okkal vannak jelölve.
 A fázisok sorban a következők: 
 
 \begin{itemize}
+\setlength\itemsep{0em}
 \item \CodeName{REINFORCE}
 \item \CodeName{SELECT\_REGION}
 \item \CodeName{SELECT\_ENEMY}
@@ -360,6 +370,8 @@ A \CodeName{GameEngine} osztály tartalmaz még egy megye elfoglalására vonatk
 Az elfoglalt területen annyi katona lesz, amennyivel a támadó megtámadta, a támadó területén pedig ennyivel kevesebb.
 A játék nyertesének eldöntése pedig annak ellenőrzésével történik, hogy a játékosoknak van-e még olyan területe, amelyről támadni tud, ha valamelyiknek nincs már ilyen, akkor vége a játéknak. 
 
+\subsection*{A MapFXMLController osztály}
+
 Végül pedig a \CodeName{MapFXMLController} osztály tartalmazza az FXML fájlban lévő komponensekre vonatkozó események irányításáért és a felület változásáért felelős metódusokat, valamint itt zajlik a játékmenet irányítása, az ehhez kapcsolódó függvények is itt találhatók.
 A következőkben ezeket részletezem. 
 
@@ -374,7 +386,9 @@ Ezután ebben a metódusban a GUI frissítése is megtörténik, illetve a felü
 
 A GUI frissítéséért felelős függvény az alapértelmezettre állítja a \CodeName{Label}-ek értékeit, emellett a köröket is beállítja egy másik metódusban meghatározott alap színükre, amely a megyék tulajdonosai szerint állítja be a színeket. A \CodeName{StackPane}-ekre beállított eseménykezelő az azokra való egérkattintások hatására lép működésbe.
 Elsősorban azt ellenőrzi, hogy a játékos körében történt-e a kattintás.
-Ha nem, akkor nem történik semmi, ha pedig igen, akkor \CodeName{switch-case} ágak segítségével ellenőrzi a \CodeName{GameEngine} osztálytól lekért aktuális fázist, és ettől függően más-más működés lép életbe a \CodeName{StackPane}-ekre kattintva. 
+Ha nem, akkor nem történik semmi, ha pedig igen, akkor \CodeName{switch-case} ágak segítségével ellenőrzi a \CodeName{GameEngine} osztálytól lekért aktuális fázist, és ettől függően más-más működés lép életbe a \CodeName{StackPane}-ekre kattintva.
+
+\subsection*{A játékos köre}
 
 Ha a \CodeName{REINFORCE} fázisban történt a kattintás, ellenőrzésre kerül, hogy a játékosnak vannak-e elérhető katonái a \CodeName{GameEngine} osztályban, melyeket elhelyezhet ebben a fázisban a saját területein.
 Ha igen, akkor ezek száma csökken 1-el, és ez hozzáadásra kerül az adott \CodeName{StackPane}-hez tartozó \CodeName{Country} objektum katonák számát tároló változójának értékéhez.
@@ -430,6 +444,8 @@ Előbbi megnyomásának hatására az elsőnek kijelölt megye katona számábó
 A visszalépésre vonatkozó gomb megnyomására a fázis ismét \CodeName{MOVE\_SELECT\_FIRST} lesz, és az adott fázishoz tartozóan alaphelyzetbe áll a felület.
 A fázis lezáró gomb megnyomásának hatására átugorható az átcsoportosítás és megkezdődik a gép köre.
 A játékos körében mindegyik fázisban, ha a térképre történik kattintás a \CodeName{StackPane}-eken kívül, akkor a kör kijelölések visszavonásra kerülnek, és a megfelelő fázisba lép a játék. 
+
+\subsection*{A gép köre}
 
 Annak érdekében, hogy láthatóak legyenek a gép lépései, egy új szálat hoztam létre a gép körére vonatkozó esemény metódusán belül, melynek végrehajtása a program bizonyos pontjain szüneteltetésre kerül a \CodeName{java.lang.Thread} csomagja által nyújtott \CodeName{Thread.sleep()} metódus segítségével, ezzel hasonló hatást elérve, mintha a gép is úgy választaná ki a megyét, mint egy felhasználó.
 Az új szál létrehozása miatt azokat a programrészeket, melyek a szálon belül módosításokat végeznek a GUI-n, JavaFX-ben a \CodeName{Platform.runLater()} metódusba kell beleírni, hogy megfelelően működjön a program, és helyesen megjelenítse a felületen történő változásokat. 
@@ -493,6 +509,7 @@ A másodikban a játékmenet aktuális helyzetére vonatkozó információk vann
 A harmadik \CodeName{JSONArray} a felhasználóra vonatkozó adatokat tartalmazza, melyekből a \CodeName{User} objektum értékei töltődnek fel. Ezek a következők:
 
 \begin{itemize}
+\setlength\itemsep{0em}
 \item név
 \item id
 \item utolsó aktivitás id-je
