@@ -6,11 +6,11 @@ Ezt követően részletezem a játék logikájáért felelős osztályokat, ille
 \section{A projekt főbb fájljainak részletezése}\label{fobbFajlok}
 
 
-A projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán látható:
+A projekt könyvtárstruktúrája \aref{fig:konyvtarStruktura} ábrán látható:
 
 \Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=10cm}
 
-Az \CodeName{App.java} egy futtatható osztály, ami mint a \ref{javafxMinta} fejezetben is említettem, ez tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat.
+Az \CodeName{App.java} egy futtatható osztály, ami mint \aref{javafxMinta} fejezetben is említettem, ez tartalmazza az alkalmazás életciklus folyamataihoz szükséges metódusokat.
 Metódusai közül a \CodeName{start} egy absztrakt metódus, melyet kötelezően felül kell írni.
 
 
@@ -62,24 +62,24 @@ public static void main(String[] args) {
     }
 \end{lstlisting}
 
-A \CodeName{POM.xml} fájl felépítésére a \ref{fig_pom} ábrán található egy minta.
+A \CodeName{POM.xml} fájl felépítésére \aref{fig:pom} ábrán található egy minta.
 Tartalmazza a projektre vonatkozó adatokat, mint például verziószám, projekt neve, kódolás. 
  
 \Figure {pom}{A POM.XML fájl tartalma}{width=15cm}
 
  
-Mint a \ref{fig_pom2} ábrán is látható, az alkalmazás függőséget is tartalmaz.
+Mint \aref{fig:pom2} ábrán is látható, az alkalmazás függőséget is tartalmaz.
 Az ábrán csak a JavaFX \CodeName{contols}-ra és az \CodeName{fxml}-re vonatkozóan, melyek elérhetőek a Maven Central Repository-ból. 
   
 \Figure {pom2}{POM.XML fájl, függőségek}{width=12cm}
 
-Ezalatt a build folyamathoz szükséges plugin-ok beállítása található, melyre egy példa a \ref{fig_build} ábrán látható: 
+Ezalatt a build folyamathoz szükséges plugin-ok beállítása található, melyre egy példa \aref{fig:build} ábrán látható: 
 
 
 \Figure {build}{POM.XML fájl, build folyamatok}{width=12cm}
 
 
-A \ref{fig_fxml} ábrán egy FXML fájl látható.
+\aref{fig:fxml} ábrán egy FXML fájl látható.
 
 \Figure {fxml}{FXML fájl}{width=15cm}
  
@@ -110,13 +110,13 @@ Az FXML elemeket, eseménykezelők metódusait \CodeName{@FXML} annotációval k
 
 A Strava API egy nyilvánosan elérhető interfész, ami hozzáférést biztosít a Strava adatbázisában tárolt adatok hozzáféréséhez.
 Ahhoz, hogy használni lehessen a Strava API-t, először az applikációt regisztrálni kell a weboldalon.
-Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek a \ref{fig_stravaApp} ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
+Ezután a beállításokon belül létre kell hozni egy alkalmazást, melynek \aref{fig:stravaApp} ábrán látható adatainak segítségével kéréseket lehet küldeni a szerver felé. 
 
 \Figure {stravaApp}{Strava alkalmazás adatai}{width=10cm}
 
 A kérések küldéséhez szükség van autentikációra, melyhez a Strava az OAuth2-t használja.
 Az OAuth elindulása után szükség van a felhasználó bejelentkezésére a Strava weboldalán, hogy engedélyezze az alkalmazás számára a hozzáférést.
-Ez a \ref{fig_stravaAuth} ábrán látható. 
+Ez \aref{fig:stravaAuth} ábrán látható. 
 
 \Figure {stravaAuth}{Strava authorizáció megerősítése}{width=10cm}
 
@@ -143,7 +143,7 @@ A \CodeName{-l} kapcsolóval lehet megjelölni, hogy mely programozási nyelven 
 Hogy mely nyelveket támogatja a Swagger Codegen, azt a \CodeName{swagger-codegen} parancs önmagában való futtatásával lehet kilistázni.
 A fenti parancsot lefuttatva a Strava API-ja java nyelven kerül legenerálásra a \CodeName{generated/java} mappába.
 Mivel az én programomban nem volt szükség összetettebb funkciók használatára a szükséges adatok eléréséhez, így elegendőnek láttam ezeket inkább csak egyszerű HTTP kérésekkel megoldani.
-A kész projekt könyvtárstruktúrája a \ref{fig_konyvtarStruktura} ábrán látható: 
+A kész projekt könyvtárstruktúrája \aref{fig:konyvtarStruktura} ábrán látható: 
 
 \Figure {konyvtarStruktura}{A projekt könyvtár struktúrája}{height=10cm}
 
