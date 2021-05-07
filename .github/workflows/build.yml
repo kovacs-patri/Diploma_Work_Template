@@ -7,7 +7,7 @@ jobs:
     container: hegyhati/diploma-latex:latest
     steps:
       - uses: actions/checkout@v2
-      - run: apt-get update && apt-get install --no-install-recommends -y texlive-lang-european
+      - run: apt-get update && apt-get install --no-install-recommends -y texlive-lang-european texlive-font-utils
       - run: echo 'Compiling LaTeX document...'
       - run: make 
       - run: echo 'Storing artifact...'
